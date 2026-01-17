@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey Results - The Penner Family</title>
+    <title>Baby Penner Due August 10 2026! - The Penner Family</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -137,98 +138,286 @@
         }
 
         .content-section {
-            padding: 3rem 0 5rem;
+            padding: 3rem 0;
         }
 
-        /* Embedded Form Section */
-        .embed-container {
+        /* Countdown Section */
+        .countdown-section {
             background: var(--warm-white);
-            padding: 2rem;
+            padding: 3rem 2rem;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             margin-bottom: 3rem;
+            text-align: center;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
-        .embed-container h2 {
+        .countdown-title {
             font-family: 'Crimson Pro', serif;
             font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .countdown-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: var(--cream);
+            padding: 1.5rem 1rem;
+            border-radius: 10px;
+            border-top: 4px solid var(--accent);
+        }
+
+        .countdown-number {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .baby-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Survey Section */
+        .survey-section {
+            padding-bottom: 2rem;
+        }
+
+        .survey-header {
             text-align: center;
+            margin-bottom: 3rem;
         }
 
-        .form-embed {
-            width: 100%;
-            min-height: 800px;
-            border: none;
+        .survey-header h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .survey-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* View Toggle */
+        .view-controls {
+            background: var(--warm-white);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .toggle-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
             border-radius: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        /* Instructions Card */
-        .instructions {
+        .toggle-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .toggle-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .filter-section {
+            flex: 1;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-section label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .filter-section select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: var(--text-dark);
+            background: white;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        .filter-section select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Results Container */
+        .results-container {
             background: var(--warm-white);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-            margin-bottom: 3rem;
-            border-left: 4px solid var(--accent);
-            animation: fadeInUp 0.6s ease-out 0.3s both;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            min-height: 400px;
         }
 
-        .instructions h3 {
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-light);
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Aggregate View */
+        .aggregate-stats {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--cream);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .stat-card h3 {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--primary);
             margin-bottom: 1rem;
         }
 
-        .instructions ol {
-            margin-left: 1.5rem;
-            color: var(--text-light);
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ddd;
         }
 
-        .instructions li {
-            margin-bottom: 0.8rem;
-            line-height: 1.6;
+        .stat-item:last-child {
+            border-bottom: none;
         }
 
-        .instructions code {
-            background: var(--cream);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: var(--primary-dark);
-        }
-
-        /* Placeholder for when no form is embedded */
-        .placeholder {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--warm-white);
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-
-        .placeholder-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
-
-        .placeholder h2 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 2rem;
+        .stat-label {
             color: var(--text-dark);
-            margin-bottom: 1rem;
+            font-weight: 500;
         }
 
-        .placeholder p {
+        .stat-value {
             color: var(--text-light);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
+            font-weight: 600;
+        }
+
+        .stat-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            background: var(--primary);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Individual Response View */
+        .response-card {
+            background: var(--cream);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .response-header {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .response-header h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .response-header p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .response-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .response-question {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .response-answer {
+            color: var(--text-light);
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
         }
 
         /* Footer */
@@ -256,9 +445,30 @@
                 font-size: 0.9rem;
             }
 
-            .embed-container,
-            .instructions {
-                padding: 1.5rem;
+            .countdown-display {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .countdown-number {
+                font-size: 2.5rem;
+            }
+
+            .view-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-section select {
+                width: 100%;
+            }
+
+            .survey-header h2 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -275,18 +485,59 @@
     </nav>
 
     <div class="page-header">
-        <h1>Results from Friend and Family Survey!</h1>
-        <p>View responses and feedback from our family forms</p>
+        <h1>Baby Penner Due August 10 2026!</h1>
+        <p>Join us in celebrating this exciting journey</p>
     </div>
 
     <div class="container">
+        <!-- Countdown Section -->
         <section class="content-section">
-            <!-- Embedded Form Results Section -->
-            <div class="embed-container">
-                <h2>Family Survey Responses</h2>
-                
-                <!-- Google Sheets Embed -->
-                <iframe class="form-embed" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTttUqCy7JfjHXs3ukhUEw7tXuIlmOJR1w_gvzvgRM-HbKAjN-zcd4fr2AzBt7H-YUkmluA8TYNPtrV/pubhtml?widget=true&amp;headers=false"></iframe>
+            <div class="countdown-section">
+                <div class="baby-emoji">👶</div>
+                <h2 class="countdown-title">Countdown to Baby Penner</h2>
+                <div class="countdown-display">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">-</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">-</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">-</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">-</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Survey Section -->
+        <section class="survey-section">
+            <div class="survey-header">
+                <h2>Friends and Family Survey Results</h2>
+                <p>See what everyone is saying!</p>
+            </div>
+
+            <div class="view-controls">
+                <div class="view-toggle">
+                    <button class="toggle-btn active" onclick="showAggregate()">📊 Aggregate Results</button>
+                    <button class="toggle-btn" onclick="showIndividual()">👤 Individual Responses</button>
+                </div>
+                <div class="filter-section" id="filterSection" style="display: none;">
+                    <label for="respondentFilter">Select Respondent:</label>
+                    <select id="respondentFilter" onchange="filterResponses()">
+                        <option value="">-- Choose a person --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="results-container" id="resultsContainer">
+                <div class="loading">Loading survey data</div>
             </div>
         </section>
     </div>
@@ -294,5 +545,196 @@
     <footer>
         <p>&copy; 2025 The Penner Family. Made with ❤️</p>
     </footer>
+
+    <script>
+        // Countdown Timer
+        const dueDate = new Date('August 10, 2026 00:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = dueDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+
+            if (distance < 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                document.querySelector('.countdown-title').textContent = 'Baby Penner is here! 🎉';
+            }
+        }
+
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Survey Data Configuration
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTttUqCy7JfjHXs3ukhUEw7tXuIlmOJR1w_gvzvgRM-HbKAjN-zcd4fr2AzBt7H-YUkmluA8TYNPtrV/pub?output=csv';
+        
+        let surveyData = [];
+        let currentView = 'aggregate';
+
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadData();
+        });
+
+        function loadData() {
+            Papa.parse(SHEET_URL, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    surveyData = results.data.filter(row => {
+                        // Filter out empty rows
+                        return Object.values(row).some(val => val && val.trim() !== '');
+                    });
+                    console.log('Loaded data:', surveyData);
+                    populateRespondentFilter();
+                    showAggregate();
+                },
+                error: function(error) {
+                    document.getElementById('resultsContainer').innerHTML = 
+                        '<div style="text-align: center; padding: 3rem; color: #d32f2f;"><h3>Error Loading Data</h3><p>Unable to fetch survey responses. Please check your internet connection and try again.</p></div>';
+                }
+            });
+        }
+
+        function populateRespondentFilter() {
+            const filter = document.getElementById('respondentFilter');
+            const nameColumn = Object.keys(surveyData[0])[1]; // Assumes name is in second column
+            
+            // Get unique names
+            const names = [...new Set(surveyData.map(row => row[nameColumn]))].filter(name => name && name.trim());
+            
+            // Clear existing options except first
+            filter.innerHTML = '<option value="">-- Choose a person --</option>';
+            
+            // Add name options
+            names.forEach((name, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = name;
+                filter.appendChild(option);
+            });
+        }
+
+        function showAggregate() {
+            currentView = 'aggregate';
+            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
+            document.getElementById('filterSection').style.display = 'none';
+            
+            if (surveyData.length === 0) {
+                document.getElementById('resultsContainer').innerHTML = '<div class="loading">Loading survey data</div>';
+                return;
+            }
+
+            const container = document.getElementById('resultsContainer');
+            const columns = Object.keys(surveyData[0]);
+            
+            let html = '<div class="aggregate-stats">';
+            html += `<div class="stat-card"><h3>📊 Survey Overview</h3>`;
+            html += `<div class="stat-item"><span class="stat-label">Total Responses</span><span class="stat-value">${surveyData.length}</span></div>`;
+            html += `</div>`;
+
+            // Analyze each question column (skip timestamp)
+            for (let i = 1; i < columns.length; i++) {
+                const column = columns[i];
+                const responses = surveyData.map(row => row[column]).filter(val => val && val.trim());
+                
+                if (responses.length === 0) continue;
+
+                html += `<div class="stat-card"><h3>${column}</h3>`;
+                
+                // Count occurrences
+                const counts = {};
+                responses.forEach(response => {
+                    counts[response] = (counts[response] || 0) + 1;
+                });
+
+                // Sort by count
+                const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+                
+                sorted.forEach(([answer, count]) => {
+                    const percentage = ((count / responses.length) * 100).toFixed(1);
+                    html += `
+                        <div class="stat-item">
+                            <span class="stat-label">${answer}</span>
+                            <span class="stat-value">${count} (${percentage}%)</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function showIndividual() {
+            currentView = 'individual';
+            document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+            document.getElementById('filterSection').style.display = 'flex';
+            
+            // Reset filter
+            document.getElementById('respondentFilter').value = '';
+            
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Please select a respondent above</h3></div>';
+        }
+
+        function filterResponses() {
+            const filterValue = document.getElementById('respondentFilter').value;
+            
+            if (filterValue === '') {
+                document.getElementById('resultsContainer').innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Please select a respondent above</h3></div>';
+                return;
+            }
+
+            const nameColumn = Object.keys(surveyData[0])[1];
+            const names = [...new Set(surveyData.map(row => row[nameColumn]))].filter(name => name && name.trim());
+            const selectedName = names[parseInt(filterValue)];
+            
+            const response = surveyData.find(row => row[nameColumn] === selectedName);
+            
+            if (!response) return;
+
+            const columns = Object.keys(response);
+            let html = '<div class="response-card">';
+            html += `<div class="response-header">`;
+            html += `<h3>${selectedName}</h3>`;
+            html += `<p>Submitted: ${response[columns[0]]}</p>`;
+            html += `</div>`;
+
+            for (let i = 2; i < columns.length; i++) {
+                const question = columns[i];
+                const answer = response[question] || 'No answer provided';
+                
+                html += `
+                    <div class="response-item">
+                        <div class="response-question">${question}</div>
+                        <div class="response-answer">${answer}</div>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            document.getElementById('resultsContainer').innerHTML = html;
+        }
+    </script>
 </body>
 </html>
