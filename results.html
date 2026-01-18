@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baby Penner Due August 10 2026! - The Penner Family</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -277,12 +277,6 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
         }
 
-        .loading {
-            text-align: center;
-            padding: 4rem;
-            color: var(--text-light);
-        }
-
         /* Card Sections */
         .result-card {
             background: var(--cream);
@@ -302,6 +296,15 @@
             color: var(--primary);
             margin-bottom: 1.5rem;
             text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
         }
 
         /* Total Responses */
@@ -337,6 +340,8 @@
         .gender-option {
             text-align: center;
             flex: 1;
+            cursor: pointer;
+            position: relative;
         }
 
         .gender-icon {
@@ -371,7 +376,7 @@
         .date-timeline {
             position: relative;
             padding: 3rem 0;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .timeline-line {
@@ -387,7 +392,7 @@
 
         .timeline-container {
             position: relative;
-            height: 120px;
+            height: 160px;
         }
 
         .timeline-marker {
@@ -396,6 +401,15 @@
             flex-direction: column;
             align-items: center;
             transform: translateX(-50%);
+            cursor: pointer;
+        }
+
+        .timeline-dots {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 0.5rem;
         }
 
         .timeline-dot {
@@ -403,14 +417,8 @@
             height: 16px;
             background: var(--primary);
             border-radius: 50%;
-            margin-bottom: 0.5rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             z-index: 2;
-        }
-
-        .timeline-dot.large {
-            width: 20px;
-            height: 20px;
         }
 
         .timeline-dot.due-date {
@@ -455,6 +463,32 @@
             padding: 1rem;
         }
 
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: var(--primary-dark);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
         /* Names Display */
         .names-section {
             margin-bottom: 2rem;
@@ -486,6 +520,13 @@
             font-weight: 500;
             color: var(--text-dark);
             border: 2px solid var(--accent);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .name-badge:hover {
+            transform: translateY(-2px);
         }
 
         .boy-badge {
@@ -661,21 +702,127 @@
                     <label for="respondentFilter">Select Respondent:</label>
                     <select id="respondentFilter" onchange="filterResponses()">
                         <option value="">-- Choose a person --</option>
+                        <option value="0">Eli</option>
+                        <option value="1">Megan</option>
+                        <option value="2">CAYLI</option>
+                        <option value="3">Karen</option>
+                        <option value="4">Dean</option>
+                        <option value="5">Granddad Hogan</option>
+                        <option value="6">Brendan and Drew</option>
+                        <option value="7">Rachel Lyons</option>
+                        <option value="8">Carmen Coleman</option>
+                        <option value="9">Katie Richardson</option>
+                        <option value="10">Grandma Penner</option>
+                        <option value="11">Grandpa P</option>
+                        <option value="12">Shannon Gaussa</option>
+                        <option value="13">derek</option>
+                        <option value="14">Cara</option>
                     </select>
                 </div>
             </div>
 
             <div class="results-container" id="resultsContainer">
-                <div class="loading">Loading survey data...</div>
+                <!-- Content loaded by JavaScript -->
             </div>
         </section>
     </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip"></div>
 
     <footer>
         <p>&copy; 2025 The Penner Family. Made with ❤️</p>
     </footer>
 
     <script>
+        // Hard-coded survey data
+        const surveyData = [
+            {name: "Eli", timestamp: "1/10/2026 13:36:42", gender: "Boy!", date: "8/6/2026", weight: "8 lbs 2 oz", hair: "Black", hairSituation: "Bald as an Eagle", eye: "Brown (Dean's)", boyName: "Luke", girlName: "Lydia"},
+            {name: "Megan", timestamp: "1/10/2026 14:44:13", gender: "Boy!", date: "8/1/2026", weight: "8lbs 5 oz", hair: "Brunette", hairSituation: "80s Rockstar - Full head of straight", eye: "Hazel (Megan's)", boyName: "Hudson", girlName: "Mia"},
+            {name: "CAYLI", timestamp: "1/10/2026 14:53:24", gender: "Girl!", date: "8/13/2026", weight: "8lbs 8oz", hair: "Black", hairSituation: "Shirley Temple - Full head of curls", eye: "Brown (Dean's)", boyName: "Trey", girlName: "Khloe"},
+            {name: "Karen", timestamp: "1/10/2026 15:03:43", gender: "Girl!", date: "8/19/2026", weight: "8 lb 4 oz", hair: "Brunette", hairSituation: "80s Rockstar - Full head of straight", eye: "Brown (Dean's)", boyName: "Benjamin (Ben)", girlName: "Molly"},
+            {name: "Dean", timestamp: "1/10/2026 15:12:28", gender: "Girl!", date: "8/14/2026", weight: "8 lbs 1 oz", hair: "Black", hairSituation: "Shirley Temple - Full head of curls", eye: "Brown (Dean's)", boyName: "xkcd.com/327", girlName: "Queen Elizabeth III"},
+            {name: "Granddad Hogan", timestamp: "1/10/2026 15:13:44", gender: "Girl!", date: "8/12/2026", weight: "8 lbs, 12 ounces", hair: "Blonde", hairSituation: "80s Rockstar - Full head of straight", eye: "Brown (Dean's)", boyName: "Aidan Patrick", girlName: "Brigid Aoife"},
+            {name: "Brendan and Drew", timestamp: "1/10/2026 22:12:15", gender: "Girl!", date: "7/31/2026", weight: "8 lbs 2 oz", hair: "Black", hairSituation: "Shirley Temple - Full head of curls", eye: "Brown (Dean's)", boyName: "Riley, Reed, Austin", girlName: "Riley, Margot, Maeve"},
+            {name: "Rachel Lyons", timestamp: "1/11/2026 15:56:20", gender: "Boy!", date: "8/1/2026", weight: "7 lbs 0 oz", hair: "Brunette", hairSituation: "Peach Fuzz", eye: "Hazel (Megan's)", boyName: "Levi", girlName: ""},
+            {name: "Carmen Coleman", timestamp: "1/11/2026 18:32:28", gender: "Girl!", date: "8/5/2026", weight: "7 lb 7 oz", hair: "Brunette", hairSituation: "Peach Fuzz", eye: "Brown (Dean's)", boyName: "Tyler, Liam, Mason, Nate", girlName: "Sophia (Sophie), Elaine (Ellie), Maya, Isabella, Maygan"},
+            {name: "Katie Richardson", timestamp: "1/11/2026 19:51:59", gender: "Boy!", date: "8/1/2026", weight: "8 lbs 2 oz", hair: "Brunette", hairSituation: "Peach Fuzz", eye: "Hazel (Megan's)", boyName: "Theo", girlName: ""},
+            {name: "Grandma Penner", timestamp: "1/11/2026 22:26:45", gender: "Girl!", date: "8/15/2026", weight: "7 lbs 8 oz", hair: "Brunette", hairSituation: "Peach Fuzz", eye: "Hazel (Megan's)", boyName: "Tobias (Toby), Dane", girlName: "Erin"},
+            {name: "Grandpa P", timestamp: "1/11/2026 22:43:31", gender: "Boy!", date: "8/5/2026", weight: "7lbs8oz", hair: "Brunette", hairSituation: "Peach Fuzz", eye: "Green", boyName: "Vector Daniel", girlName: "Danielle Lynne"},
+            {name: "Shannon Gaussa", timestamp: "1/13/2026 14:21:25", gender: "Boy!", date: "8/14/2026", weight: "8 lbs 8 oz", hair: "Black", hairSituation: "Peach Fuzz", eye: "Hazel (Megan's)", boyName: "", girlName: ""},
+            {name: "derek", timestamp: "1/15/2026 16:44:50", gender: "Boy!", date: "8/8/2026", weight: "10lbs", hair: "Red", hairSituation: "Peach Fuzz", eye: "Hazel (Megan's)", boyName: "Dean jr.", girlName: "Megan jr."},
+            {name: "Cara", timestamp: "1/15/2026 17:08:34", gender: "Boy!", date: "8/15/2026", weight: "8lbs 3 oz", hair: "Brunette", hairSituation: "Peach Fuzz", eye: "Brown (Dean's)", boyName: "Nathan", girlName: "Cara"}
+        ];
+
+        // Create lookup tables for tooltips
+        const genderLookup = {
+            "Boy!": [],
+            "Girl!": []
+        };
+        const dateLookup = {};
+        const weightLookup = {};
+        const hairLookup = {};
+        const hairSituationLookup = {};
+        const eyeLookup = {};
+        const boyNameLookup = {};
+        const girlNameLookup = {};
+
+        surveyData.forEach(response => {
+            genderLookup[response.gender].push(response.name);
+            
+            if (!dateLookup[response.date]) dateLookup[response.date] = [];
+            dateLookup[response.date].push(response.name);
+            
+            if (!weightLookup[response.weight]) weightLookup[response.weight] = [];
+            weightLookup[response.weight].push(response.name);
+            
+            if (!hairLookup[response.hair]) hairLookup[response.hair] = [];
+            hairLookup[response.hair].push(response.name);
+            
+            if (!hairSituationLookup[response.hairSituation]) hairSituationLookup[response.hairSituation] = [];
+            hairSituationLookup[response.hairSituation].push(response.name);
+            
+            if (!eyeLookup[response.eye]) eyeLookup[response.eye] = [];
+            eyeLookup[response.eye].push(response.name);
+            
+            // Handle boy names (may have commas)
+            if (response.boyName) {
+                const names = response.boyName.split(',').map(n => n.trim());
+                names.forEach(name => {
+                    if (name) {
+                        if (!boyNameLookup[name]) boyNameLookup[name] = [];
+                        boyNameLookup[name].push(response.name);
+                    }
+                });
+            }
+            
+            // Handle girl names (may have commas)
+            if (response.girlName) {
+                const names = response.girlName.split(',').map(n => n.trim());
+                names.forEach(name => {
+                    if (name) {
+                        if (!girlNameLookup[name]) girlNameLookup[name] = [];
+                        girlNameLookup[name].push(response.name);
+                    }
+                });
+            }
+        });
+
+        // Tooltip functions
+        function showTooltip(event, names, title) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.innerHTML = `<strong>${title}</strong>${names.join(', ')}`;
+            tooltip.classList.add('show');
+            
+            const rect = event.target.getBoundingClientRect();
+            tooltip.style.left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + window.scrollY + 'px';
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove('show');
+        }
+
         // Countdown Timer
         const dueDate = new Date('August 10, 2026 00:00:00').getTime();
 
@@ -705,99 +852,15 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // Survey Data
-        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTttUqCy7JfjHXs3ukhUEw7tXuIlmOJR1w_gvzvgRM-HbKAjN-zcd4fr2AzBt7H-YUkmluA8TYNPtrV/pub?output=csv';
-        
-        let surveyData = [];
-        let columns = [];
         let charts = {};
 
-        window.addEventListener('DOMContentLoaded', function() {
-            loadData();
-        });
-
-        function loadData() {
-            Papa.parse(SHEET_URL, {
-                download: true,
-                header: true,
-                complete: function(results) {
-                    surveyData = results.data.filter(row => {
-                        return Object.values(row).some(val => val && val.trim() !== '');
-                    });
-                    columns = results.meta.fields;
-                    console.log('Loaded data:', surveyData);
-                    console.log('Columns:', columns);
-                    populateRespondentFilter();
-                    showAggregate();
-                },
-                error: function(error) {
-                    document.getElementById('resultsContainer').innerHTML = 
-                        '<div style="text-align: center; padding: 3rem; color: #d32f2f;"><h3>Error Loading Data</h3><p>Unable to fetch survey responses.</p></div>';
-                }
-            });
-        }
-
-        function populateRespondentFilter() {
-            const filter = document.getElementById('respondentFilter');
-            const nameColumn = columns[1];
-            const names = [...new Set(surveyData.map(row => row[nameColumn]))].filter(name => name && name.trim());
-            
-            filter.innerHTML = '<option value="">-- Choose a person --</option>';
-            names.forEach((name, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = name;
-                filter.appendChild(option);
-            });
-        }
-
-        function findColumnByKeyword(keywords) {
-            for (let col of columns) {
-                const lowerCol = col.toLowerCase();
-                for (let keyword of keywords) {
-                    if (lowerCol.includes(keyword.toLowerCase())) {
-                        return col;
-                    }
-                }
-            }
-            return null;
-        }
-
-        function getColumnData(columnName) {
-            if (!columnName) return {};
-            const responses = surveyData.map(row => row[columnName]).filter(val => val && val.trim());
-            const counts = {};
-            responses.forEach(response => {
-                counts[response] = (counts[response] || 0) + 1;
-            });
-            return counts;
-        }
-
-        function parseDate(dateStr) {
-            const patterns = [
-                /(\d{1,2})\/(\d{1,2})\/(\d{4})/,
-                /(\d{4})-(\d{1,2})-(\d{1,2})/,
-                /(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(\d{4})/i,
-                /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}),?\s+(\d{4})/i
-            ];
-
-            for (let pattern of patterns) {
-                const match = dateStr.match(pattern);
-                if (match) {
-                    try {
-                        return new Date(dateStr);
-                    } catch (e) {
-                        continue;
-                    }
-                }
-            }
-            return null;
-        }
+        // Register the datalabels plugin
+        Chart.register(ChartDataLabels);
 
         function generateColors(count) {
             const baseColors = [
-                '#2c5f4f', '#d4a373', '#5dade2', '#f8b4d1', '#7cb342',
-                '#8e7618', '#dc143c', '#4a90e2', '#a52a2a', '#f5deb3'
+                '#4a90e2', '#e17055', '#00b894', '#fdcb6e', '#6c5ce7',
+                '#fd79a8', '#00cec9', '#ff7675', '#74b9ff', '#fab1a0'
             ];
             const colors = [];
             for (let i = 0; i < count; i++) {
@@ -806,8 +869,7 @@
             return colors;
         }
 
-        function createPieChart(canvasId, data, title) {
-            // Destroy existing chart if it exists
+        function createPieChart(canvasId, data, title, lookup) {
             if (charts[canvasId]) {
                 charts[canvasId].destroy();
             }
@@ -845,13 +907,38 @@
                         },
                         tooltip: {
                             callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
                                 label: function(context) {
-                                    const label = context.label || '';
                                     const value = context.parsed || 0;
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                     const percentage = ((value / total) * 100).toFixed(0);
-                                    return `${label}: ${value} (${percentage}%)`;
+                                    return `${percentage}% (${value} ${value === 1 ? 'vote' : 'votes'})`;
+                                },
+                                afterLabel: function(context) {
+                                    const label = context.label || '';
+                                    const voters = lookup[label] || [];
+                                    if (voters.length > 0) {
+                                        return '\n' + voters.join('\n');
+                                    }
+                                    return '';
                                 }
+                            },
+                            displayColors: false,
+                            padding: 12,
+                            bodySpacing: 6
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            },
+                            formatter: (value, context) => {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(0);
+                                return percentage + '%';
                             }
                         }
                     }
@@ -863,188 +950,198 @@
             document.querySelectorAll('.toggle-btn')[0].classList.add('active');
             document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
             document.getElementById('filterSection').style.display = 'none';
-            
-            if (surveyData.length === 0) {
-                return;
-            }
 
-            let html = '';
+            // Gender data
+            const boyCount = surveyData.filter(r => r.gender === "Boy!").length;
+            const girlCount = surveyData.filter(r => r.gender === "Girl!").length;
+            const boyPercent = ((boyCount / surveyData.length) * 100).toFixed(0);
+            const girlPercent = ((girlCount / surveyData.length) * 100).toFixed(0);
 
-            // Total Responses
-            html += `
+            // Weight data
+            const weights = {
+                "7 lbs 0 oz": 1,
+                "7 lb 7 oz": 1,
+                "7 lbs 8 oz": 2,
+                "8 lbs 1 oz": 1,
+                "8 lbs 2 oz": 3,
+                "8 lbs 3 oz": 1,
+                "8 lb 4 oz": 1,
+                "8 lbs 5 oz": 1,
+                "8 lbs 8 oz": 2,
+                "8 lbs 12 oz": 1,
+                "10 lbs": 1
+            };
+
+            // Hair data
+            const hair = {
+                "Black": 5,
+                "Brunette": 8,
+                "Blonde": 1,
+                "Red": 1
+            };
+
+            // Eye data
+            const eye = {
+                "Brown (Dean's)": 9,
+                "Hazel (Megan's)": 5,
+                "Green": 1
+            };
+
+            // Hair Situation data
+            const hairSituation = {
+                "Peach Fuzz": 8,
+                "Bald as an Eagle": 1,
+                "80s Rockstar - Full head of straight": 3,
+                "Shirley Temple - Full head of curls": 3
+            };
+
+            // Boy names
+            const boyNames = ["Luke", "Hudson", "Trey", "Benjamin (Ben)", "xkcd.com/327", "Aidan Patrick", 
+                             "Riley", "Reed", "Austin", "Levi", "Tyler", "Liam", "Mason", "Nate", 
+                             "Theo", "Tobias (Toby)", "Dane", "Vector Daniel", "Dean jr.", "Nathan"];
+
+            // Girl names
+            const girlNames = ["Lydia", "Mia", "Khloe", "Molly", "Queen Elizabeth III", "Brigid Aoife",
+                              "Riley", "Margot", "Maeve", "Sophia (Sophie)", "Elaine (Ellie)", "Maya", 
+                              "Isabella", "Maygan", "Erin", "Danielle Lynne", "Megan jr.", "Cara"];
+
+            let html = `
                 <div class="total-box">
                     <h3>Total Responses</h3>
-                    <div class="total-number">${surveyData.length}</div>
+                    <div class="total-number">15</div>
                 </div>
-            `;
 
-            // Gender
-            const genderCol = findColumnByKeyword(['gender', 'boy or girl', 'boy/girl']);
-            if (genderCol) {
-                const genderData = getColumnData(genderCol);
-                html += `<div class="result-card">
-                    <h3>👶 Baby's Gender</h3>
-                    <div class="gender-display">`;
-                
-                Object.entries(genderData).sort((a, b) => b[1] - a[1]).forEach(([answer, count]) => {
-                    const percentage = ((count / surveyData.length) * 100).toFixed(0);
-                    const isBoy = answer.toLowerCase().includes('boy');
-                    const icon = isBoy ? '👦' : '👧';
-                    const colorClass = isBoy ? 'boy-color' : 'girl-color';
-                    
-                    html += `
-                        <div class="gender-option">
-                            <span class="gender-icon">${icon}</span>
-                            <div class="gender-label">${answer}</div>
-                            <div class="gender-percentage ${colorClass}">${percentage}%</div>
-                            <div class="gender-count">${count} ${count === 1 ? 'vote' : 'votes'}</div>
+                <div class="result-card">
+                    <h3>👶 Boy or Girl?</h3>
+                    <div class="gender-display">
+                        <div class="gender-option" 
+                             onmouseenter="showTooltip(event, ${JSON.stringify(genderLookup['Boy!']).replace(/"/g, '&quot;')}, 'Voted Boy: ')"
+                             onmouseleave="hideTooltip()">
+                            <span class="gender-icon">👦</span>
+                            <div class="gender-label">Boy!</div>
+                            <div class="gender-percentage boy-color">${boyPercent}%</div>
+                            <div class="gender-count">${boyCount} votes</div>
                         </div>
-                    `;
-                });
-                
-                html += `</div></div>`;
-            }
+                        <div class="gender-option"
+                             onmouseenter="showTooltip(event, ${JSON.stringify(genderLookup['Girl!']).replace(/"/g, '&quot;')}, 'Voted Girl: ')"
+                             onmouseleave="hideTooltip()">
+                            <span class="gender-icon">👧</span>
+                            <div class="gender-label">Girl!</div>
+                            <div class="gender-percentage girl-color">${girlPercent}%</div>
+                            <div class="gender-count">${girlCount} votes</div>
+                        </div>
+                    </div>
+                </div>
 
-            // Date Timeline
-            const dateCol = findColumnByKeyword(['date', 'when', 'arrive', 'born']);
-            if (dateCol) {
-                const dateData = getColumnData(dateCol);
-                const dueDateObj = new Date('August 10, 2026');
-                
-                const dateEntries = Object.entries(dateData).map(([dateStr, count]) => {
-                    const parsedDate = parseDate(dateStr);
-                    return { dateStr, count, parsedDate };
-                }).filter(item => item.parsedDate).sort((a, b) => a.parsedDate - b.parsedDate);
-
-                if (dateEntries.length > 0) {
-                    const minDate = dateEntries[0].parsedDate;
-                    const maxDate = dateEntries[dateEntries.length - 1].parsedDate;
-                    const totalRange = maxDate - minDate;
-
-                    html += `<div class="result-card">
-                        <h3>📅 Predicted Arrival Date</h3>
-                        <div class="date-timeline">
-                            <div class="timeline-line"></div>
-                            <div class="timeline-container">`;
-                    
-                    if (dueDateObj >= minDate && dueDateObj <= maxDate) {
-                        const duePosition = ((dueDateObj - minDate) / totalRange) * 100;
-                        html += `
-                            <div class="timeline-marker" style="left: ${duePosition}%;">
-                                <div class="timeline-dot due-date"></div>
+                <div class="result-card">
+                    <h3>Birthday (Due Date is Aug 10 2026)</h3>
+                    <div class="date-timeline">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-container">
+                            <div class="timeline-marker" style="left: 50%;">
+                                <div class="timeline-dots">
+                                    <div class="timeline-dot due-date"></div>
+                                </div>
                                 <div class="timeline-label due-date-label">Due Date</div>
                                 <div class="timeline-label due-date-label">8/10/26</div>
-                            </div>
-                        `;
-                    }
+                            </div>`;
 
-                    dateEntries.forEach(({ dateStr, count, parsedDate }) => {
-                        const position = ((parsedDate - minDate) / totalRange) * 100;
-                        const dotClass = count > 2 ? 'large' : '';
-                        const formattedDate = (parsedDate.getMonth() + 1) + '/' + parsedDate.getDate();
-                        
-                        html += `
-                            <div class="timeline-marker" style="left: ${position}%; top: ${count > 1 ? '65px' : '75px'};">
-                                <div class="timeline-dot ${dotClass}"></div>
-                                <div class="timeline-count">${count}</div>
-                                <div class="timeline-label">${formattedDate}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `</div></div></div>`;
-                }
-            }
+            // Add timeline markers with tooltips
+            const timelineData = [
+                {date: "7/31/2026", display: "7/31", pos: 0, count: 1},
+                {date: "8/1/2026", display: "8/1", pos: 8, count: 3},
+                {date: "8/5/2026", display: "8/5", pos: 27, count: 2},
+                {date: "8/6/2026", display: "8/6", pos: 35, count: 1},
+                {date: "8/8/2026", display: "8/8", pos: 43, count: 1},
+                {date: "8/12/2026", display: "8/12", pos: 59, count: 1},
+                {date: "8/13/2026", display: "8/13", pos: 67, count: 1},
+                {date: "8/14/2026", display: "8/14", pos: 75, count: 2},
+                {date: "8/15/2026", display: "8/15", pos: 83, count: 2},
+                {date: "8/19/2026", display: "8/19", pos: 100, count: 1}
+            ];
 
-            // Weight - Pie Chart
-            const weightCol = findColumnByKeyword(['weight', 'lbs', 'pounds']);
-            if (weightCol) {
-                const weightData = getColumnData(weightCol);
-                html += `<div class="result-card">
-                    <h3>⚖️ Predicted Weight</h3>
+            timelineData.forEach(item => {
+                const dots = Array(item.count).fill('<div class="timeline-dot"></div>').join('');
+                const names = dateLookup[item.date] || [];
+                html += `
+                    <div class="timeline-marker" style="left: ${item.pos}%; top: 70px;"
+                         onmouseenter="showTooltip(event, ${JSON.stringify(names).replace(/"/g, '&quot;')}, '${item.display}: ')"
+                         onmouseleave="hideTooltip()">
+                        <div class="timeline-dots">
+                            ${dots}
+                        </div>
+                        <div class="timeline-count">${item.count}</div>
+                        <div class="timeline-label">${item.display}</div>
+                    </div>
+                `;
+            });
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Weight</h3>
+                    <div class="section-subtitle">(Dean was 7 lbs 2.5 oz, Megan was 9 lbs 0 oz)</div>
                     <div class="chart-container">
                         <canvas id="weightChart"></canvas>
                     </div>
-                </div>`;
-            }
+                </div>
 
-            // Hair Color - Pie Chart
-            const hairCol = findColumnByKeyword(['hair']);
-            if (hairCol) {
-                const hairData = getColumnData(hairCol);
-                html += `<div class="result-card">
-                    <h3>💇 Hair Color</h3>
+                <div class="result-card">
+                    <h3>Hair Color</h3>
                     <div class="chart-container">
                         <canvas id="hairChart"></canvas>
                     </div>
-                </div>`;
-            }
+                </div>
 
-            // Eye Color - Pie Chart
-            const eyeCol = findColumnByKeyword(['eye']);
-            if (eyeCol) {
-                const eyeData = getColumnData(eyeCol);
-                html += `<div class="result-card">
-                    <h3>👁️ Eye Color</h3>
+                <div class="result-card">
+                    <h3>Hair Situation at birth</h3>
+                    <div class="chart-container">
+                        <canvas id="hairSituationChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Eye Color</h3>
                     <div class="chart-container">
                         <canvas id="eyeChart"></canvas>
                     </div>
-                </div>`;
-            }
+                </div>
 
-            // Boy and Girl Name Suggestions
-            const boyNameCol = findColumnByKeyword(['boy name']);
-            const girlNameCol = findColumnByKeyword(['girl name']);
-            
-            if (boyNameCol || girlNameCol) {
-                html += `<div class="result-card">
-                    <h3>✨ Name Suggestions</h3>`;
-                
-                if (boyNameCol) {
-                    const boyNames = Object.keys(getColumnData(boyNameCol));
-                    if (boyNames.length > 0) {
-                        html += `<div class="names-section">
-                            <div class="names-section-title">👦 Boy Names</div>
-                            <div class="names-grid">`;
-                        boyNames.forEach(name => {
-                            html += `<div class="name-badge boy-badge">${name}</div>`;
-                        });
-                        html += `</div></div>`;
-                    }
-                }
-                
-                if (girlNameCol) {
-                    const girlNames = Object.keys(getColumnData(girlNameCol));
-                    if (girlNames.length > 0) {
-                        html += `<div class="names-section">
-                            <div class="names-section-title">👧 Girl Names</div>
-                            <div class="names-grid">`;
-                        girlNames.forEach(name => {
-                            html += `<div class="name-badge girl-badge">${name}</div>`;
-                        });
-                        html += `</div></div>`;
-                    }
-                }
-                
-                html += `</div>`;
-            }
+                <div class="result-card">
+                    <h3>✨ Name suggestions (boy)</h3>
+                    <div class="names-grid">
+                        ${boyNames.map(name => {
+                            const voters = boyNameLookup[name] || [];
+                            return `<div class="name-badge boy-badge" 
+                                        onmouseenter="showTooltip(event, ${JSON.stringify(voters).replace(/"/g, '&quot;')}, 'Suggested by: ')"
+                                        onmouseleave="hideTooltip()">${name}</div>`;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>✨ Name suggestions (girl)</h3>
+                    <div class="names-grid">
+                        ${girlNames.map(name => {
+                            const voters = girlNameLookup[name] || [];
+                            return `<div class="name-badge girl-badge"
+                                        onmouseenter="showTooltip(event, ${JSON.stringify(voters).replace(/"/g, '&quot;')}, 'Suggested by: ')"
+                                        onmouseleave="hideTooltip()">${name}</div>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
 
             document.getElementById('resultsContainer').innerHTML = html;
 
-            // Create pie charts after HTML is rendered
             setTimeout(() => {
-                if (weightCol) {
-                    const weightData = getColumnData(weightCol);
-                    createPieChart('weightChart', weightData, 'Weight');
-                }
-                if (hairCol) {
-                    const hairData = getColumnData(hairCol);
-                    createPieChart('hairChart', hairData, 'Hair Color');
-                }
-                if (eyeCol) {
-                    const eyeData = getColumnData(eyeCol);
-                    createPieChart('eyeChart', eyeData, 'Eye Color');
-                }
+                createPieChart('weightChart', weights, 'Weight', weightLookup);
+                createPieChart('hairChart', hair, 'Hair Color', hairLookup);
+                createPieChart('hairSituationChart', hairSituation, 'Hair Situation', hairSituationLookup);
+                createPieChart('eyeChart', eye, 'Eye Color', eyeLookup);
             }, 100);
         }
 
@@ -1052,56 +1149,74 @@
             document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
             document.querySelectorAll('.toggle-btn')[1].classList.add('active');
             document.getElementById('filterSection').style.display = 'flex';
-            
-            // Destroy all charts
+
             Object.keys(charts).forEach(chartId => {
                 if (charts[chartId]) {
                     charts[chartId].destroy();
                 }
             });
             charts = {};
-            
+
             document.getElementById('respondentFilter').value = '';
             document.getElementById('resultsContainer').innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Please select a respondent above</h3></div>';
         }
 
         function filterResponses() {
-            const filterValue = document.getElementById('respondentFilter').value;
+            const index = parseInt(document.getElementById('respondentFilter').value);
             
-            if (filterValue === '') {
+            if (isNaN(index)) {
                 document.getElementById('resultsContainer').innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Please select a respondent above</h3></div>';
                 return;
             }
 
-            const nameColumn = columns[1];
-            const names = [...new Set(surveyData.map(row => row[nameColumn]))].filter(name => name && name.trim());
-            const selectedName = names[parseInt(filterValue)];
-            
-            const response = surveyData.find(row => row[nameColumn] === selectedName);
-            
-            if (!response) return;
+            const response = surveyData[index];
 
-            let html = '<div class="response-card">';
-            html += `<div class="response-header">
-                <h3>${selectedName}</h3>
-                <p>Submitted: ${response[columns[0]]}</p>
-            </div>`;
-
-            for (let i = 2; i < columns.length; i++) {
-                const question = columns[i];
-                const answer = response[question] || 'No answer provided';
-                
-                html += `
-                    <div class="response-item">
-                        <div class="response-question">${question}</div>
-                        <div class="response-answer">${answer}</div>
+            let html = `
+                <div class="response-card">
+                    <div class="response-header">
+                        <h3>${response.name}</h3>
+                        <p>Submitted: ${response.timestamp}</p>
                     </div>
-                `;
-            }
-            
-            html += '</div>';
+                    <div class="response-item">
+                        <div class="response-question">Boy or Girl?</div>
+                        <div class="response-answer">${response.gender}</div>
+                    </div>
+                    <div class="response-item">
+                        <div class="response-question">Birthday (Due Date is Aug 10 2026)</div>
+                        <div class="response-answer">${response.date}</div>
+                    </div>
+                    <div class="response-item">
+                        <div class="response-question">Weight (Dean was 7 lbs 2.5 oz, Megan was 9 lbs 0 oz)</div>
+                        <div class="response-answer">${response.weight}</div>
+                    </div>
+                    <div class="response-item">
+                        <div class="response-question">Hair Color</div>
+                        <div class="response-answer">${response.hair}</div>
+                    </div>
+                    <div class="response-item">
+                        <div class="response-question">Hair Situation at birth</div>
+                        <div class="response-answer">${response.hairSituation}</div>
+                    </div>
+                    <div class="response-item">
+                        <div class="response-question">Eye Color</div>
+                        <div class="response-answer">${response.eye}</div>
+                    </div>
+                    <div class="response-item">
+                        <div class="response-question">Name suggestions (boy)</div>
+                        <div class="response-answer">${response.boyName || 'No suggestion'}</div>
+                    </div>
+                    <div class="response-item">
+                        <div class="response-question">Name suggestions (girl)</div>
+                        <div class="response-answer">${response.girlName || 'No suggestion'}</div>
+                    </div>
+                </div>
+            `;
+
             document.getElementById('resultsContainer').innerHTML = html;
         }
+
+        // Show aggregate on page load
+        showAggregate();
     </script>
 </body>
 </html>
