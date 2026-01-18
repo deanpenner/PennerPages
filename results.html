@@ -6,6 +6,7 @@
     <title>Baby Penner Due August 10 2026! - The Penner Family</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -446,32 +447,12 @@
             font-weight: 700;
         }
 
-        /* Simple List Display */
-        .simple-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Pie Chart Container */
+        .chart-container {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
             padding: 1rem;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .list-label {
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .list-value {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.1rem;
         }
 
         /* Names Display */
@@ -614,6 +595,10 @@
             .timeline-count {
                 font-size: 1rem;
             }
+
+            .chart-container {
+                max-width: 300px;
+            }
         }
     </style>
 </head>
@@ -725,6 +710,7 @@
         
         let surveyData = [];
         let columns = [];
+        let charts = {};
 
         window.addEventListener('DOMContentLoaded', function() {
             loadData();
@@ -788,10 +774,9 @@
         }
 
         function parseDate(dateStr) {
-            // Try to parse various date formats
             const patterns = [
-                /(\d{1,2})\/(\d{1,2})\/(\d{4})/,  // MM/DD/YYYY
-                /(\d{4})-(\d{1,2})-(\d{1,2})/,    // YYYY-MM-DD
+                /(\d{1,2})\/(\d{1,2})\/(\d{4})/,
+                /(\d{4})-(\d{1,2})-(\d{1,2})/,
                 /(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(\d{4})/i,
                 /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}),?\s+(\d{4})/i
             ];
@@ -807,6 +792,71 @@
                 }
             }
             return null;
+        }
+
+        function generateColors(count) {
+            const baseColors = [
+                '#2c5f4f', '#d4a373', '#5dade2', '#f8b4d1', '#7cb342',
+                '#8e7618', '#dc143c', '#4a90e2', '#a52a2a', '#f5deb3'
+            ];
+            const colors = [];
+            for (let i = 0; i < count; i++) {
+                colors.push(baseColors[i % baseColors.length]);
+            }
+            return colors;
+        }
+
+        function createPieChart(canvasId, data, title) {
+            // Destroy existing chart if it exists
+            if (charts[canvasId]) {
+                charts[canvasId].destroy();
+            }
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+            const colors = generateColors(labels.length);
+
+            charts[canvasId] = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: colors,
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    family: "'Lato', sans-serif"
+                                },
+                                color: '#2d2d2d'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(0);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function showAggregate() {
@@ -861,14 +911,12 @@
                 const dateData = getColumnData(dateCol);
                 const dueDateObj = new Date('August 10, 2026');
                 
-                // Parse and sort dates
                 const dateEntries = Object.entries(dateData).map(([dateStr, count]) => {
                     const parsedDate = parseDate(dateStr);
                     return { dateStr, count, parsedDate };
                 }).filter(item => item.parsedDate).sort((a, b) => a.parsedDate - b.parsedDate);
 
                 if (dateEntries.length > 0) {
-                    // Find min and max dates for timeline
                     const minDate = dateEntries[0].parsedDate;
                     const maxDate = dateEntries[dateEntries.length - 1].parsedDate;
                     const totalRange = maxDate - minDate;
@@ -879,7 +927,6 @@
                             <div class="timeline-line"></div>
                             <div class="timeline-container">`;
                     
-                    // Add due date marker
                     if (dueDateObj >= minDate && dueDateObj <= maxDate) {
                         const duePosition = ((dueDateObj - minDate) / totalRange) * 100;
                         html += `
@@ -891,7 +938,6 @@
                         `;
                     }
 
-                    // Add prediction markers
                     dateEntries.forEach(({ dateStr, count, parsedDate }) => {
                         const position = ((parsedDate - minDate) / totalRange) * 100;
                         const dotClass = count > 2 ? 'large' : '';
@@ -910,68 +956,40 @@
                 }
             }
 
-            // Weight
+            // Weight - Pie Chart
             const weightCol = findColumnByKeyword(['weight', 'lbs', 'pounds']);
             if (weightCol) {
                 const weightData = getColumnData(weightCol);
                 html += `<div class="result-card">
                     <h3>⚖️ Predicted Weight</h3>
-                    <div class="simple-list">`;
-                
-                Object.entries(weightData).sort((a, b) => {
-                    const weightA = parseFloat(a[0]);
-                    const weightB = parseFloat(b[0]);
-                    return weightB - weightA;
-                }).forEach(([weight, count]) => {
-                    html += `
-                        <div class="list-item">
-                            <span class="list-label">${weight}</span>
-                            <span class="list-value">${count}</span>
-                        </div>
-                    `;
-                });
-                
-                html += `</div></div>`;
+                    <div class="chart-container">
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>`;
             }
 
-            // Hair Color
+            // Hair Color - Pie Chart
             const hairCol = findColumnByKeyword(['hair']);
             if (hairCol) {
                 const hairData = getColumnData(hairCol);
                 html += `<div class="result-card">
                     <h3>💇 Hair Color</h3>
-                    <div class="simple-list">`;
-                
-                Object.entries(hairData).sort((a, b) => b[1] - a[1]).forEach(([color, count]) => {
-                    html += `
-                        <div class="list-item">
-                            <span class="list-label">${color}</span>
-                            <span class="list-value">${count}</span>
-                        </div>
-                    `;
-                });
-                
-                html += `</div></div>`;
+                    <div class="chart-container">
+                        <canvas id="hairChart"></canvas>
+                    </div>
+                </div>`;
             }
 
-            // Eye Color
+            // Eye Color - Pie Chart
             const eyeCol = findColumnByKeyword(['eye']);
             if (eyeCol) {
                 const eyeData = getColumnData(eyeCol);
                 html += `<div class="result-card">
                     <h3>👁️ Eye Color</h3>
-                    <div class="simple-list">`;
-                
-                Object.entries(eyeData).sort((a, b) => b[1] - a[1]).forEach(([color, count]) => {
-                    html += `
-                        <div class="list-item">
-                            <span class="list-label">${color}</span>
-                            <span class="list-value">${count}</span>
-                        </div>
-                    `;
-                });
-                
-                html += `</div></div>`;
+                    <div class="chart-container">
+                        <canvas id="eyeChart"></canvas>
+                    </div>
+                </div>`;
             }
 
             // Boy and Girl Name Suggestions
@@ -1012,12 +1030,36 @@
             }
 
             document.getElementById('resultsContainer').innerHTML = html;
+
+            // Create pie charts after HTML is rendered
+            setTimeout(() => {
+                if (weightCol) {
+                    const weightData = getColumnData(weightCol);
+                    createPieChart('weightChart', weightData, 'Weight');
+                }
+                if (hairCol) {
+                    const hairData = getColumnData(hairCol);
+                    createPieChart('hairChart', hairData, 'Hair Color');
+                }
+                if (eyeCol) {
+                    const eyeData = getColumnData(eyeCol);
+                    createPieChart('eyeChart', eyeData, 'Eye Color');
+                }
+            }, 100);
         }
 
         function showIndividual() {
             document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
             document.querySelectorAll('.toggle-btn')[1].classList.add('active');
             document.getElementById('filterSection').style.display = 'flex';
+            
+            // Destroy all charts
+            Object.keys(charts).forEach(chartId => {
+                if (charts[chartId]) {
+                    charts[chartId].destroy();
+                }
+            });
+            charts = {};
             
             document.getElementById('respondentFilter').value = '';
             document.getElementById('resultsContainer').innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Please select a respondent above</h3></div>';
