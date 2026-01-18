@@ -366,6 +366,86 @@
         .boy-color { color: var(--boy-blue); }
         .girl-color { color: var(--girl-pink); }
 
+        /* Timeline Display */
+        .date-timeline {
+            position: relative;
+            padding: 3rem 0;
+            margin: 1rem 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #e0e0e0, var(--primary));
+            border-radius: 2px;
+            transform: translateY(-50%);
+        }
+
+        .timeline-container {
+            position: relative;
+            height: 120px;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateX(-50%);
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        .timeline-dot.large {
+            width: 20px;
+            height: 20px;
+        }
+
+        .timeline-dot.due-date {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 2px 8px rgba(212, 163, 115, 0.4); }
+            50% { transform: scale(1.15); box-shadow: 0 4px 16px rgba(212, 163, 115, 0.6); }
+        }
+
+        .timeline-label {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            white-space: nowrap;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-count {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Crimson Pro', serif;
+        }
+
+        .due-date-label {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
         /* Simple List Display */
         .simple-list {
             display: flex;
@@ -395,20 +475,46 @@
         }
 
         /* Names Display */
+        .names-section {
+            margin-bottom: 2rem;
+        }
+
+        .names-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .names-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
         .names-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.75rem;
         }
 
         .name-badge {
             background: white;
-            padding: 1rem;
+            padding: 0.75rem;
             border-radius: 8px;
             text-align: center;
             font-weight: 500;
             color: var(--text-dark);
             border: 2px solid var(--accent);
+        }
+
+        .boy-badge {
+            border-color: var(--boy-blue);
+            background: rgba(93, 173, 226, 0.05);
+        }
+
+        .girl-badge {
+            border-color: var(--girl-pink);
+            background: rgba(248, 180, 209, 0.05);
         }
 
         /* Individual Response View */
@@ -499,6 +605,14 @@
 
             .names-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .timeline-label {
+                font-size: 0.7rem;
+            }
+
+            .timeline-count {
+                font-size: 1rem;
             }
         }
     </style>
@@ -639,7 +753,7 @@
 
         function populateRespondentFilter() {
             const filter = document.getElementById('respondentFilter');
-            const nameColumn = columns[1]; // Assumes name is in second column
+            const nameColumn = columns[1];
             const names = [...new Set(surveyData.map(row => row[nameColumn]))].filter(name => name && name.trim());
             
             filter.innerHTML = '<option value="">-- Choose a person --</option>';
@@ -671,6 +785,28 @@
                 counts[response] = (counts[response] || 0) + 1;
             });
             return counts;
+        }
+
+        function parseDate(dateStr) {
+            // Try to parse various date formats
+            const patterns = [
+                /(\d{1,2})\/(\d{1,2})\/(\d{4})/,  // MM/DD/YYYY
+                /(\d{4})-(\d{1,2})-(\d{1,2})/,    // YYYY-MM-DD
+                /(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(\d{4})/i,
+                /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}),?\s+(\d{4})/i
+            ];
+
+            for (let pattern of patterns) {
+                const match = dateStr.match(pattern);
+                if (match) {
+                    try {
+                        return new Date(dateStr);
+                    } catch (e) {
+                        continue;
+                    }
+                }
+            }
+            return null;
         }
 
         function showAggregate() {
@@ -719,24 +855,59 @@
                 html += `</div></div>`;
             }
 
-            // Date
+            // Date Timeline
             const dateCol = findColumnByKeyword(['date', 'when', 'arrive', 'born']);
             if (dateCol) {
                 const dateData = getColumnData(dateCol);
-                html += `<div class="result-card">
-                    <h3>📅 Predicted Arrival Date</h3>
-                    <div class="simple-list">`;
+                const dueDateObj = new Date('August 10, 2026');
                 
-                Object.entries(dateData).sort((a, b) => b[1] - a[1]).forEach(([date, count]) => {
-                    html += `
-                        <div class="list-item">
-                            <span class="list-label">${date}</span>
-                            <span class="list-value">${count}</span>
-                        </div>
-                    `;
-                });
-                
-                html += `</div></div>`;
+                // Parse and sort dates
+                const dateEntries = Object.entries(dateData).map(([dateStr, count]) => {
+                    const parsedDate = parseDate(dateStr);
+                    return { dateStr, count, parsedDate };
+                }).filter(item => item.parsedDate).sort((a, b) => a.parsedDate - b.parsedDate);
+
+                if (dateEntries.length > 0) {
+                    // Find min and max dates for timeline
+                    const minDate = dateEntries[0].parsedDate;
+                    const maxDate = dateEntries[dateEntries.length - 1].parsedDate;
+                    const totalRange = maxDate - minDate;
+
+                    html += `<div class="result-card">
+                        <h3>📅 Predicted Arrival Date</h3>
+                        <div class="date-timeline">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-container">`;
+                    
+                    // Add due date marker
+                    if (dueDateObj >= minDate && dueDateObj <= maxDate) {
+                        const duePosition = ((dueDateObj - minDate) / totalRange) * 100;
+                        html += `
+                            <div class="timeline-marker" style="left: ${duePosition}%;">
+                                <div class="timeline-dot due-date"></div>
+                                <div class="timeline-label due-date-label">Due Date</div>
+                                <div class="timeline-label due-date-label">8/10/26</div>
+                            </div>
+                        `;
+                    }
+
+                    // Add prediction markers
+                    dateEntries.forEach(({ dateStr, count, parsedDate }) => {
+                        const position = ((parsedDate - minDate) / totalRange) * 100;
+                        const dotClass = count > 2 ? 'large' : '';
+                        const formattedDate = (parsedDate.getMonth() + 1) + '/' + parsedDate.getDate();
+                        
+                        html += `
+                            <div class="timeline-marker" style="left: ${position}%; top: ${count > 1 ? '65px' : '75px'};">
+                                <div class="timeline-dot ${dotClass}"></div>
+                                <div class="timeline-count">${count}</div>
+                                <div class="timeline-label">${formattedDate}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += `</div></div></div>`;
+                }
             }
 
             // Weight
@@ -803,22 +974,41 @@
                 html += `</div></div>`;
             }
 
-            // Names
-            const nameCol = findColumnByKeyword(['name suggestion', 'name', 'suggest']);
-            if (nameCol) {
-                const nameData = getColumnData(nameCol);
-                const names = Object.keys(nameData);
-                if (names.length > 0) {
-                    html += `<div class="result-card">
-                        <h3>✨ Name Suggestions</h3>
-                        <div class="names-grid">`;
-                    
-                    names.forEach(name => {
-                        html += `<div class="name-badge">${name}</div>`;
-                    });
-                    
-                    html += `</div></div>`;
+            // Boy and Girl Name Suggestions
+            const boyNameCol = findColumnByKeyword(['boy name']);
+            const girlNameCol = findColumnByKeyword(['girl name']);
+            
+            if (boyNameCol || girlNameCol) {
+                html += `<div class="result-card">
+                    <h3>✨ Name Suggestions</h3>`;
+                
+                if (boyNameCol) {
+                    const boyNames = Object.keys(getColumnData(boyNameCol));
+                    if (boyNames.length > 0) {
+                        html += `<div class="names-section">
+                            <div class="names-section-title">👦 Boy Names</div>
+                            <div class="names-grid">`;
+                        boyNames.forEach(name => {
+                            html += `<div class="name-badge boy-badge">${name}</div>`;
+                        });
+                        html += `</div></div>`;
+                    }
                 }
+                
+                if (girlNameCol) {
+                    const girlNames = Object.keys(getColumnData(girlNameCol));
+                    if (girlNames.length > 0) {
+                        html += `<div class="names-section">
+                            <div class="names-section-title">👧 Girl Names</div>
+                            <div class="names-grid">`;
+                        girlNames.forEach(name => {
+                            html += `<div class="name-badge girl-badge">${name}</div>`;
+                        });
+                        html += `</div></div>`;
+                    }
+                }
+                
+                html += `</div>`;
             }
 
             document.getElementById('resultsContainer').innerHTML = html;
