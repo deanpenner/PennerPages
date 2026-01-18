@@ -40,22 +40,10 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            animation: slideDown 0.5s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         nav .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -112,29 +100,16 @@
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .page-header p {
             font-size: 1.1rem;
             opacity: 0.9;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
         }
 
         /* Main Content */
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -151,7 +126,6 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             margin-bottom: 3rem;
             text-align: center;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         .countdown-title {
@@ -163,10 +137,8 @@
 
         .countdown-display {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1.5rem;
-            max-width: 600px;
-            margin: 0 auto;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
         }
 
         .countdown-item {
@@ -178,7 +150,7 @@
 
         .countdown-number {
             font-family: 'Crimson Pro', serif;
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary);
             line-height: 1;
@@ -186,7 +158,7 @@
         }
 
         .countdown-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -229,19 +201,19 @@
         /* View Toggle */
         .view-controls {
             background: var(--warm-white);
-            padding: 1.5rem 2rem;
+            padding: 1.5rem;
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.06);
             margin-bottom: 2rem;
             display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
+            gap: 1rem;
+            flex-direction: column;
         }
 
         .view-toggle {
             display: flex;
             gap: 1rem;
+            justify-content: center;
         }
 
         .toggle-btn {
@@ -255,6 +227,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            flex: 1;
         }
 
         .toggle-btn.active {
@@ -268,15 +241,15 @@
         }
 
         .filter-section {
-            flex: 1;
             display: flex;
-            gap: 1rem;
-            align-items: center;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .filter-section label {
             font-weight: 600;
             color: var(--text-dark);
+            text-align: center;
         }
 
         .filter-section select {
@@ -288,7 +261,6 @@
             color: var(--text-dark);
             background: white;
             cursor: pointer;
-            min-width: 200px;
         }
 
         .filter-section select:focus {
@@ -302,7 +274,6 @@
             padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            min-height: 400px;
         }
 
         .loading {
@@ -311,67 +282,77 @@
             color: var(--text-light);
         }
 
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-
-        /* Fun Aggregate View */
-        .fun-aggregate {
-            display: grid;
-            gap: 2.5rem;
-        }
-
-        .fun-card {
+        /* Card Sections */
+        .result-card {
             background: var(--cream);
             padding: 2rem;
-            border-radius: 12px;
+            border-radius: 10px;
+            margin-bottom: 2rem;
             border-top: 4px solid var(--accent);
         }
 
-        .fun-card h3 {
+        .result-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-card h3 {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--primary);
             margin-bottom: 1.5rem;
             text-align: center;
         }
 
+        /* Total Responses */
+        .total-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .total-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .total-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            font-family: 'Crimson Pro', serif;
+            color: var(--accent);
+        }
+
         /* Gender Display */
         .gender-display {
             display: flex;
+            gap: 2rem;
             justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
         }
 
         .gender-option {
             text-align: center;
             flex: 1;
-            min-width: 150px;
         }
 
         .gender-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
             display: block;
         }
 
         .gender-label {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: var(--text-dark);
             margin-bottom: 0.5rem;
         }
 
         .gender-percentage {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             font-family: 'Crimson Pro', serif;
         }
@@ -385,218 +366,49 @@
         .boy-color { color: var(--boy-blue); }
         .girl-color { color: var(--girl-pink); }
 
-        /* Date Timeline */
-        .date-timeline {
-            position: relative;
-            padding: 2rem 0;
-            margin: 2rem 0;
+        /* Simple List Display */
+        .simple-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        .timeline-line {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(to right, #e0e0e0, var(--accent));
-            border-radius: 2px;
-        }
-
-        .timeline-markers {
-            position: relative;
+        .list-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .timeline-marker {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 1;
-        }
-
-        .timeline-dot {
-            width: 20px;
-            height: 20px;
-            background: var(--primary);
-            border-radius: 50%;
-            margin-bottom: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .timeline-dot.due-date {
-            width: 30px;
-            height: 30px;
-            background: var(--accent);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
-        .timeline-label {
-            font-size: 0.85rem;
-            color: var(--text-dark);
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .timeline-count {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary);
-            font-family: 'Crimson Pro', serif;
-        }
-
-        .due-date-label {
-            color: var(--accent);
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-
-        /* Weight Display */
-        .weight-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 1rem;
-        }
-
-        .weight-item {
-            text-align: center;
             padding: 1rem;
             background: white;
             border-radius: 8px;
-            border-bottom: 3px solid var(--primary);
-            transition: transform 0.2s;
+            border-left: 4px solid var(--primary);
         }
 
-        .weight-item:hover {
-            transform: translateY(-3px);
-        }
-
-        .weight-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            font-family: 'Crimson Pro', serif;
-        }
-
-        .weight-count {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 0.3rem;
-        }
-
-        /* Color Palette Display */
-        .color-palette {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: center;
-        }
-
-        .color-swatch {
-            text-align: center;
-        }
-
-        .color-circle {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            margin: 0 auto 0.75rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 3px solid white;
-        }
-
-        .color-name {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .color-count {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        /* Names Carousel */
-        .names-carousel {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            min-height: 200px;
-        }
-
-        .names-section {
-            margin-bottom: 2rem;
-        }
-
-        .names-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .names-gender-label {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .names-scroll {
-            display: flex;
-            animation: scroll 30s linear infinite;
-            white-space: nowrap;
-        }
-
-        .names-scroll.paused {
-            animation-play-state: paused;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .name-tag {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            margin: 0 0.5rem;
-            background: var(--cream);
-            border-radius: 20px;
-            font-size: 1.1rem;
-            color: var(--text-dark);
+        .list-label {
             font-weight: 500;
-            border: 2px solid var(--accent);
+            color: var(--text-dark);
         }
 
-        /* Overview Stats */
-        .overview-stats {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .overview-stats h3 {
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .total-responses {
-            font-size: 3rem;
+        .list-value {
             font-weight: 700;
-            font-family: 'Crimson Pro', serif;
-            color: var(--accent);
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* Names Display */
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .name-badge {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-dark);
+            border: 2px solid var(--accent);
         }
 
         /* Individual Response View */
@@ -604,18 +416,18 @@
             background: var(--cream);
             padding: 2rem;
             border-radius: 8px;
-            margin-bottom: 1.5rem;
         }
 
         .response-header {
             border-bottom: 2px solid var(--accent);
             padding-bottom: 1rem;
             margin-bottom: 1.5rem;
+            text-align: center;
         }
 
         .response-header h3 {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--primary);
         }
 
@@ -673,37 +485,20 @@
             }
 
             .countdown-number {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
-            .view-controls {
+            .gender-display {
                 flex-direction: column;
-                align-items: stretch;
-            }
-
-            .filter-section {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .filter-section select {
-                width: 100%;
+                gap: 1.5rem;
             }
 
             .survey-header h2 {
                 font-size: 2rem;
             }
 
-            .gender-display {
-                gap: 1.5rem;
-            }
-
-            .timeline-label {
-                font-size: 0.7rem;
-            }
-
-            .weight-grid {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            .names-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
         }
     </style>
@@ -772,7 +567,7 @@
             </div>
 
             <div class="results-container" id="resultsContainer">
-                <div class="loading">Loading survey data</div>
+                <div class="loading">Loading survey data...</div>
             </div>
         </section>
     </div>
@@ -815,7 +610,7 @@
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTttUqCy7JfjHXs3ukhUEw7tXuIlmOJR1w_gvzvgRM-HbKAjN-zcd4fr2AzBt7H-YUkmluA8TYNPtrV/pub?output=csv';
         
         let surveyData = [];
-        let currentView = 'aggregate';
+        let columns = [];
 
         window.addEventListener('DOMContentLoaded', function() {
             loadData();
@@ -829,7 +624,9 @@
                     surveyData = results.data.filter(row => {
                         return Object.values(row).some(val => val && val.trim() !== '');
                     });
+                    columns = results.meta.fields;
                     console.log('Loaded data:', surveyData);
+                    console.log('Columns:', columns);
                     populateRespondentFilter();
                     showAggregate();
                 },
@@ -842,7 +639,7 @@
 
         function populateRespondentFilter() {
             const filter = document.getElementById('respondentFilter');
-            const nameColumn = Object.keys(surveyData[0])[1];
+            const nameColumn = columns[1]; // Assumes name is in second column
             const names = [...new Set(surveyData.map(row => row[nameColumn]))].filter(name => name && name.trim());
             
             filter.innerHTML = '<option value="">-- Choose a person --</option>';
@@ -854,225 +651,180 @@
             });
         }
 
-        function getColorCode(colorName) {
-            const colors = {
-                'Brown': '#8B4513',
-                'Black': '#2C2C2C',
-                'Blonde': '#F5DEB3',
-                'Red': '#DC143C',
-                'Auburn': '#A52A2A',
-                'Blue': '#4A90E2',
-                'Green': '#7CB342',
-                'Hazel': '#8E7618',
-                'Gray': '#808080',
-                'Amber': '#FFBF00'
-            };
-            return colors[colorName] || '#888';
+        function findColumnByKeyword(keywords) {
+            for (let col of columns) {
+                const lowerCol = col.toLowerCase();
+                for (let keyword of keywords) {
+                    if (lowerCol.includes(keyword.toLowerCase())) {
+                        return col;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function getColumnData(columnName) {
+            if (!columnName) return {};
+            const responses = surveyData.map(row => row[columnName]).filter(val => val && val.trim());
+            const counts = {};
+            responses.forEach(response => {
+                counts[response] = (counts[response] || 0) + 1;
+            });
+            return counts;
         }
 
         function showAggregate() {
-            currentView = 'aggregate';
             document.querySelectorAll('.toggle-btn')[0].classList.add('active');
             document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
             document.getElementById('filterSection').style.display = 'none';
             
             if (surveyData.length === 0) {
-                document.getElementById('resultsContainer').innerHTML = '<div class="loading">Loading survey data</div>';
                 return;
             }
 
-            const container = document.getElementById('resultsContainer');
-            const columns = Object.keys(surveyData[0]);
-            
-            let html = '<div class="fun-aggregate">';
-            
-            // Overview
-            html += `<div class="overview-stats">
-                <h3>Total Responses</h3>
-                <div class="total-responses">${surveyData.length}</div>
-            </div>`;
+            let html = '';
 
-            // Process each column
-            for (let i = 1; i < columns.length; i++) {
-                const column = columns[i];
-                const responses = surveyData.map(row => row[column]).filter(val => val && val.trim());
+            // Total Responses
+            html += `
+                <div class="total-box">
+                    <h3>Total Responses</h3>
+                    <div class="total-number">${surveyData.length}</div>
+                </div>
+            `;
+
+            // Gender
+            const genderCol = findColumnByKeyword(['gender', 'boy or girl', 'boy/girl']);
+            if (genderCol) {
+                const genderData = getColumnData(genderCol);
+                html += `<div class="result-card">
+                    <h3>👶 Baby's Gender</h3>
+                    <div class="gender-display">`;
                 
-                if (responses.length === 0) continue;
-
-                const counts = {};
-                responses.forEach(response => {
-                    counts[response] = (counts[response] || 0) + 1;
+                Object.entries(genderData).sort((a, b) => b[1] - a[1]).forEach(([answer, count]) => {
+                    const percentage = ((count / surveyData.length) * 100).toFixed(0);
+                    const isBoy = answer.toLowerCase().includes('boy');
+                    const icon = isBoy ? '👦' : '👧';
+                    const colorClass = isBoy ? 'boy-color' : 'girl-color';
+                    
+                    html += `
+                        <div class="gender-option">
+                            <span class="gender-icon">${icon}</span>
+                            <div class="gender-label">${answer}</div>
+                            <div class="gender-percentage ${colorClass}">${percentage}%</div>
+                            <div class="gender-count">${count} ${count === 1 ? 'vote' : 'votes'}</div>
+                        </div>
+                    `;
                 });
+                
+                html += `</div></div>`;
+            }
 
-                // Gender
-                if (column.toLowerCase().includes('gender') || column.toLowerCase().includes('boy or girl')) {
-                    html += `<div class="fun-card">
-                        <h3>👶 Baby's Gender</h3>
-                        <div class="gender-display">`;
-                    
-                    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-                    sorted.forEach(([answer, count]) => {
-                        const percentage = ((count / responses.length) * 100).toFixed(0);
-                        const isBoy = answer.toLowerCase().includes('boy');
-                        const icon = isBoy ? '👦' : '👧';
-                        const colorClass = isBoy ? 'boy-color' : 'girl-color';
-                        
-                        html += `
-                            <div class="gender-option">
-                                <span class="gender-icon">${icon}</span>
-                                <div class="gender-label">${answer}</div>
-                                <div class="gender-percentage ${colorClass}">${percentage}%</div>
-                                <div class="gender-count">${count} ${count === 1 ? 'vote' : 'votes'}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `</div></div>`;
-                }
-                // Date/Timeline
-                else if (column.toLowerCase().includes('date') || column.toLowerCase().includes('when')) {
-                    html += `<div class="fun-card">
-                        <h3>📅 Predicted Arrival Dates</h3>
-                        <div class="date-timeline">
-                            <div class="timeline-line"></div>
-                            <div class="timeline-markers">`;
-                    
-                    const sorted = Object.entries(counts).sort((a, b) => {
-                        const dateA = new Date(a[0]);
-                        const dateB = new Date(b[0]);
-                        return dateA - dateB;
-                    });
-                    
-                    sorted.forEach(([date, count]) => {
-                        const isDueDate = date.includes('August 10') || date.includes('8/10') || date.includes('08/10');
-                        html += `
-                            <div class="timeline-marker">
-                                <div class="timeline-dot ${isDueDate ? 'due-date' : ''}"></div>
-                                <div class="timeline-count">${count}</div>
-                                <div class="timeline-label ${isDueDate ? 'due-date-label' : ''}">${date}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `</div></div></div>`;
-                }
-                // Weight
-                else if (column.toLowerCase().includes('weight')) {
-                    html += `<div class="fun-card">
-                        <h3>⚖️ Predicted Weight</h3>
-                        <div class="weight-grid">`;
-                    
-                    const sorted = Object.entries(counts).sort((a, b) => {
-                        const weightA = parseFloat(a[0]);
-                        const weightB = parseFloat(b[0]);
-                        return weightB - weightA;
-                    });
-                    
-                    sorted.forEach(([weight, count]) => {
-                        html += `
-                            <div class="weight-item">
-                                <div class="weight-value">${weight}</div>
-                                <div class="weight-count">${count} ${count === 1 ? 'vote' : 'votes'}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `</div></div>`;
-                }
-                // Hair Color
-                else if (column.toLowerCase().includes('hair')) {
-                    html += `<div class="fun-card">
-                        <h3>💇 Hair Color</h3>
-                        <div class="color-palette">`;
-                    
-                    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-                    sorted.forEach(([color, count]) => {
-                        const colorCode = getColorCode(color);
-                        html += `
-                            <div class="color-swatch">
-                                <div class="color-circle" style="background: ${colorCode};"></div>
-                                <div class="color-name">${color}</div>
-                                <div class="color-count">${count}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `</div></div>`;
-                }
-                // Eye Color
-                else if (column.toLowerCase().includes('eye')) {
-                    html += `<div class="fun-card">
-                        <h3>👁️ Eye Color</h3>
-                        <div class="color-palette">`;
-                    
-                    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-                    sorted.forEach(([color, count]) => {
-                        const colorCode = getColorCode(color);
-                        html += `
-                            <div class="color-swatch">
-                                <div class="color-circle" style="background: ${colorCode};"></div>
-                                <div class="color-name">${color}</div>
-                                <div class="color-count">${count}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `</div></div>`;
-                }
-                // Names
-                else if (column.toLowerCase().includes('name')) {
-                    html += `<div class="fun-card">
+            // Date
+            const dateCol = findColumnByKeyword(['date', 'when', 'arrive', 'born']);
+            if (dateCol) {
+                const dateData = getColumnData(dateCol);
+                html += `<div class="result-card">
+                    <h3>📅 Predicted Arrival Date</h3>
+                    <div class="simple-list">`;
+                
+                Object.entries(dateData).sort((a, b) => b[1] - a[1]).forEach(([date, count]) => {
+                    html += `
+                        <div class="list-item">
+                            <span class="list-label">${date}</span>
+                            <span class="list-value">${count}</span>
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+            }
+
+            // Weight
+            const weightCol = findColumnByKeyword(['weight', 'lbs', 'pounds']);
+            if (weightCol) {
+                const weightData = getColumnData(weightCol);
+                html += `<div class="result-card">
+                    <h3>⚖️ Predicted Weight</h3>
+                    <div class="simple-list">`;
+                
+                Object.entries(weightData).sort((a, b) => {
+                    const weightA = parseFloat(a[0]);
+                    const weightB = parseFloat(b[0]);
+                    return weightB - weightA;
+                }).forEach(([weight, count]) => {
+                    html += `
+                        <div class="list-item">
+                            <span class="list-label">${weight}</span>
+                            <span class="list-value">${count}</span>
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+            }
+
+            // Hair Color
+            const hairCol = findColumnByKeyword(['hair']);
+            if (hairCol) {
+                const hairData = getColumnData(hairCol);
+                html += `<div class="result-card">
+                    <h3>💇 Hair Color</h3>
+                    <div class="simple-list">`;
+                
+                Object.entries(hairData).sort((a, b) => b[1] - a[1]).forEach(([color, count]) => {
+                    html += `
+                        <div class="list-item">
+                            <span class="list-label">${color}</span>
+                            <span class="list-value">${count}</span>
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+            }
+
+            // Eye Color
+            const eyeCol = findColumnByKeyword(['eye']);
+            if (eyeCol) {
+                const eyeData = getColumnData(eyeCol);
+                html += `<div class="result-card">
+                    <h3>👁️ Eye Color</h3>
+                    <div class="simple-list">`;
+                
+                Object.entries(eyeData).sort((a, b) => b[1] - a[1]).forEach(([color, count]) => {
+                    html += `
+                        <div class="list-item">
+                            <span class="list-label">${color}</span>
+                            <span class="list-value">${count}</span>
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+            }
+
+            // Names
+            const nameCol = findColumnByKeyword(['name suggestion', 'name', 'suggest']);
+            if (nameCol) {
+                const nameData = getColumnData(nameCol);
+                const names = Object.keys(nameData);
+                if (names.length > 0) {
+                    html += `<div class="result-card">
                         <h3>✨ Name Suggestions</h3>
-                        <div class="names-carousel">`;
+                        <div class="names-grid">`;
                     
-                    // Separate boy and girl names
-                    const boyNames = [];
-                    const girlNames = [];
-                    
-                    Object.keys(counts).forEach(name => {
-                        // Simple heuristic - you might want to improve this
-                        if (name.length > 0) {
-                            // For now, alternate or you can check against known lists
-                            if (Math.random() > 0.5) {
-                                boyNames.push(name);
-                            } else {
-                                girlNames.push(name);
-                            }
-                        }
+                    names.forEach(name => {
+                        html += `<div class="name-badge">${name}</div>`;
                     });
-                    
-                    if (boyNames.length > 0) {
-                        html += `<div class="names-section">
-                            <div class="names-gender-label">👦 Boy Names</div>
-                            <div class="names-scroll">`;
-                        const doubled = [...boyNames, ...boyNames];
-                        doubled.forEach(name => {
-                            html += `<span class="name-tag">${name}</span>`;
-                        });
-                        html += `</div></div>`;
-                    }
-                    
-                    if (girlNames.length > 0) {
-                        html += `<div class="names-section">
-                            <div class="names-gender-label">👧 Girl Names</div>
-                            <div class="names-scroll">`;
-                        const doubled = [...girlNames, ...girlNames];
-                        doubled.forEach(name => {
-                            html += `<span class="name-tag">${name}</span>`;
-                        });
-                        html += `</div></div>`;
-                    }
                     
                     html += `</div></div>`;
                 }
             }
-            
-            html += '</div>';
-            container.innerHTML = html;
+
+            document.getElementById('resultsContainer').innerHTML = html;
         }
 
         function showIndividual() {
-            currentView = 'individual';
             document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
             document.querySelectorAll('.toggle-btn')[1].classList.add('active');
             document.getElementById('filterSection').style.display = 'flex';
@@ -1089,7 +841,7 @@
                 return;
             }
 
-            const nameColumn = Object.keys(surveyData[0])[1];
+            const nameColumn = columns[1];
             const names = [...new Set(surveyData.map(row => row[nameColumn]))].filter(name => name && name.trim());
             const selectedName = names[parseInt(filterValue)];
             
@@ -1097,7 +849,6 @@
             
             if (!response) return;
 
-            const columns = Object.keys(response);
             let html = '<div class="response-card">';
             html += `<div class="response-header">
                 <h3>${selectedName}</h3>
