@@ -510,9 +510,10 @@
                     document.querySelector('.insert-coin').textContent = "GAME OVER";
                     document.querySelector('.insert-coin').style.color = "var(--neon-magenta)";
                     document.querySelector('.insert-coin').style.animation = "none";
+                }
 
-                    // CALCULATE SCORES
-                    const officialDate = new Date(official.birthDate);
+                // CALCULATE SCORES
+                const officialDate = new Date(official.birthDate);
                     const officialTotalOz = (parseInt(official.weightLbs) * 16) + parseInt(official.weightOz);
                     const chosenNameLower = official.chosenName.toLowerCase().trim();
 
@@ -520,28 +521,32 @@
                         let score = 0;
 
                         // 1. Gender (5,000 pts)
-                        if (player.gender === official.gender) score += 5000;
+                        if (official.gender && player.gender === official.gender) score += 5000;
 
                         // 2. Birth Date (10,000 pts base, -1,000 per day off)
-                        const playerDate = new Date(player.date);
-                        const dayDiff = Math.abs((playerDate - officialDate) / (1000 * 60 * 60 * 24));
-                        let dateScore = 10000 - (dayDiff * 1000);
-                        if (dateScore > 0) score += dateScore;
+                        if (official.birthDate) {
+                            const playerDate = new Date(player.date);
+                            const dayDiff = Math.abs((playerDate - officialDate) / (1000 * 60 * 60 * 24));
+                            let dateScore = 10000 - (dayDiff * 1000);
+                            if (dateScore > 0) score += dateScore;
+                        }
 
                         // 3. Weight (5,000 pts base, -500 per oz off)
-                        const playerTotalOz = getWeightOunces(player.weight);
-                        const ozDiff = Math.abs(playerTotalOz - officialTotalOz);
-                        let weightScore = 5000 - (ozDiff * 500);
-                        if (weightScore > 0) score += weightScore;
+                        if (official.weightLbs > 0) {
+                            const playerTotalOz = getWeightOunces(player.weight);
+                            const ozDiff = Math.abs(playerTotalOz - officialTotalOz);
+                            let weightScore = 5000 - (ozDiff * 500);
+                            if (weightScore > 0) score += weightScore;
+                        }
 
                         // 4. Hair Color (2,000 pts)
-                        if (player.hair === official.hairColor) score += 2000;
+                        if (official.hairColor && player.hair === official.hairColor) score += 2000;
 
                         // 5. Hair Situation (2,000 pts)
-                        if (player.hairSituation === official.hairSituation) score += 2000;
+                        if (official.hairSituation && player.hairSituation === official.hairSituation) score += 2000;
 
                         // 6. Eye Color (2,000 pts)
-                        if (player.eye === official.eyeColor) score += 2000;
+                        if (official.eyeColor && player.eye === official.eyeColor) score += 2000;
 
                         // 7. Jackpot Name Picked (10,000 pts)
                         if (chosenNameLower && chosenNameLower.length > 0) {
@@ -557,7 +562,6 @@
                     
                     // Sort by highest score
                     players.sort((a, b) => b.score - a.score);
-                }
 
                 // Render Table
                 players.forEach((player, index) => {
