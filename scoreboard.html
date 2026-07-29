@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARCADE MODE - Baby Penner</title>
-    <!-- 8-bit retro font -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Retro fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-cyan: #0ff;
@@ -23,6 +23,7 @@
         }
 
         body {
+            font-family: 'VT323', monospace;
             background-color: var(--bg-color);
             color: #fff;
             overflow-x: hidden;
@@ -180,7 +181,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 1.5rem;
         }
 
@@ -195,14 +196,16 @@
 
         .stat-label {
             color: #aaa;
-            font-size: 0.65rem;
-            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
             letter-spacing: 1px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.65rem;
         }
 
         .stat-value {
             color: var(--neon-yellow);
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             text-shadow: 0 0 5px var(--neon-yellow);
         }
 
@@ -269,25 +272,34 @@
             border-bottom: 2px solid var(--neon-cyan);
             font-size: 0.8rem;
             letter-spacing: 1px;
+            font-family: 'Press Start 2P', cursive;
         }
 
         td {
             padding: 1rem 0;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             color: #ccc;
         }
 
         .rank {
             color: var(--neon-cyan);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
         }
 
         .score {
             color: var(--neon-green);
             text-shadow: 0 0 5px var(--neon-green);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
         }
 
         tr:first-of-type td {
             color: #fff;
+            font-size: 1.3rem;
+        }
+        
+        tr:first-of-type .rank, tr:first-of-type .score {
             font-size: 1.1rem;
         }
 
@@ -305,8 +317,8 @@
             border: 2px dashed var(--neon-magenta);
             padding: 1.5rem;
             background: rgba(20, 0, 20, 0.8);
-            font-size: 0.75rem;
-            line-height: 1.8;
+            font-size: 0.95rem;
+            line-height: 1.5;
             height: fit-content;
         }
 
@@ -314,8 +326,9 @@
             color: var(--neon-magenta);
             text-align: center;
             margin-bottom: 1.5rem;
-            font-size: 1rem;
+            font-size: 0.9rem;
             text-shadow: 0 0 5px var(--neon-magenta);
+            font-family: 'Press Start 2P', cursive;
         }
 
         .rules-list {
@@ -330,14 +343,16 @@
         .rules-list span {
             color: var(--neon-yellow);
             display: inline-block;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.2rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
         }
 
         .rules-list .penalty {
             color: #ff3333;
-            font-size: 0.65rem;
+            font-size: 0.85rem;
             display: block;
-            margin-top: 0.3rem;
+            margin-top: 0.1rem;
             padding-left: 1rem;
         }
 
@@ -349,6 +364,7 @@
             animation: blink 1s step-end infinite;
             text-shadow: 0 0 10px var(--neon-green);
             text-align: center;
+            font-family: 'Press Start 2P', cursive;
         }
 
         @keyframes blink {
@@ -382,6 +398,7 @@
                 <div class="stat-box"><span class="stat-label">HAIR COLOR:</span> <span class="stat-value">??????</span></div>
                 <div class="stat-box"><span class="stat-label">HAIR STYLE:</span> <span class="stat-value">??????</span></div>
                 <div class="stat-box"><span class="stat-label">EYE COLOR:</span> <span class="stat-value">??????</span></div>
+                <div class="stat-box"><span class="stat-label">NAME:</span> <span class="stat-value">??????</span></div>
             </div>
         </div>
 
@@ -488,6 +505,7 @@
                     document.querySelectorAll('.stat-value')[3].textContent = official.hairColor.toUpperCase();
                     document.querySelectorAll('.stat-value')[4].textContent = official.hairSituation.toUpperCase();
                     document.querySelectorAll('.stat-value')[5].textContent = official.eyeColor.toUpperCase();
+                    document.querySelectorAll('.stat-value')[6].textContent = official.chosenName.toUpperCase();
                     
                     document.querySelector('.insert-coin').textContent = "GAME OVER";
                     document.querySelector('.insert-coin').style.color = "var(--neon-magenta)";
