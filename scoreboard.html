@@ -497,16 +497,16 @@
         fetch('official_answers.json?t=' + new Date().getTime())
             .then(res => res.json())
             .then(official => {
+                // Always update the Stats Box if an answer is provided (so we can lock in Gender early!)
+                if (official.gender) document.querySelectorAll('.stat-value')[0].textContent = official.gender.toUpperCase();
+                if (official.birthDate) document.querySelectorAll('.stat-value')[1].textContent = official.birthDate;
+                if (official.weightLbs > 0) document.querySelectorAll('.stat-value')[2].textContent = `${official.weightLbs} LBS ${official.weightOz} OZ`;
+                if (official.hairColor) document.querySelectorAll('.stat-value')[3].textContent = official.hairColor.toUpperCase();
+                if (official.hairSituation) document.querySelectorAll('.stat-value')[4].textContent = official.hairSituation.toUpperCase();
+                if (official.eyeColor) document.querySelectorAll('.stat-value')[5].textContent = official.eyeColor.toUpperCase();
+                if (official.chosenName) document.querySelectorAll('.stat-value')[6].textContent = official.chosenName.toUpperCase();
+
                 if (official.babyIsBorn) {
-                    // Update Stats Box
-                    document.querySelectorAll('.stat-value')[0].textContent = official.gender.toUpperCase();
-                    document.querySelectorAll('.stat-value')[1].textContent = official.birthDate;
-                    document.querySelectorAll('.stat-value')[2].textContent = `${official.weightLbs} LBS ${official.weightOz} OZ`;
-                    document.querySelectorAll('.stat-value')[3].textContent = official.hairColor.toUpperCase();
-                    document.querySelectorAll('.stat-value')[4].textContent = official.hairSituation.toUpperCase();
-                    document.querySelectorAll('.stat-value')[5].textContent = official.eyeColor.toUpperCase();
-                    document.querySelectorAll('.stat-value')[6].textContent = official.chosenName.toUpperCase();
-                    
                     document.querySelector('.insert-coin').textContent = "GAME OVER";
                     document.querySelector('.insert-coin').style.color = "var(--neon-magenta)";
                     document.querySelector('.insert-coin').style.animation = "none";
