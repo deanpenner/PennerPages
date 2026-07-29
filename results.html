@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baby Penner Due August 10 2026! - The Penner Family</title>
+    <title>Baby Penner Due August 10 2026 - The Penner Family</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
@@ -27,9 +27,10 @@
             --boy-blue-bg: #eaf2fb;
             --girl-pink: #e87a90;
             --girl-pink-bg: #fdf0f3;
-            --card-radius: 16px;
-            --shadow-soft: 0 10px 30px rgba(44, 95, 79, 0.05);
-            --shadow-hover: 0 15px 35px rgba(44, 95, 79, 0.12);
+            /* Changed from 16px to 4px for a sleeker, professional look */
+            --card-radius: 4px; 
+            --shadow-soft: 0 4px 20px rgba(44, 95, 79, 0.05);
+            --shadow-hover: 0 8px 25px rgba(44, 95, 79, 0.08);
         }
 
         body {
@@ -43,7 +44,7 @@
         nav {
             background: var(--warm-white);
             padding: 1.25rem 2rem;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 10px rgba(0,0,0,0.03);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -91,8 +92,7 @@
             bottom: -5px;
             left: 0;
             width: 100%;
-            height: 3px;
-            border-radius: 2px;
+            height: 2px;
             background: var(--accent);
         }
 
@@ -102,18 +102,6 @@
             color: var(--warm-white);
             padding: 3.5rem 2rem 3rem;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .page-header::before {
-            content: '👶';
-            position: absolute;
-            font-size: 12rem;
-            right: -2rem;
-            bottom: -3rem;
-            opacity: 0.08;
-            pointer-events: none;
         }
 
         .page-header h1 {
@@ -140,6 +128,21 @@
         .content-section {
             padding: 2.5rem 0 1rem;
         }
+
+        /* SVG Icons */
+        .svg-icon {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 1rem;
+            stroke: var(--primary);
+            stroke-width: 1.5;
+            fill: none;
+            display: inline-block;
+        }
+
+        .svg-icon-white { stroke: var(--warm-white); }
+        .svg-icon-boy { stroke: var(--boy-blue); }
+        .svg-icon-girl { stroke: var(--girl-pink); }
 
         /* Countdown Section */
         .countdown-section {
@@ -170,14 +173,14 @@
         .countdown-item {
             background: var(--cream);
             padding: 1.25rem 1rem;
-            border-radius: 12px;
-            border-top: 4px solid var(--accent);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border-radius: var(--card-radius);
+            border-top: 3px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             transition: transform 0.2s ease;
         }
 
         .countdown-item:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .countdown-number {
@@ -195,18 +198,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 700;
-        }
-
-        .baby-emoji {
-            font-size: 3rem;
-            margin-bottom: 0.75rem;
-            display: inline-block;
-            animation: floatBounce 3s ease-in-out infinite;
-        }
-
-        @keyframes floatBounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(4deg); }
         }
 
         /* Survey Section */
@@ -234,8 +225,8 @@
         /* View Toggle Controls */
         .view-controls {
             background: var(--warm-white);
-            padding: 1.25rem 1.5rem;
-            border-radius: 50px;
+            padding: 1rem 1.25rem;
+            border-radius: var(--card-radius);
             box-shadow: var(--shadow-soft);
             margin-bottom: 2.5rem;
             display: flex;
@@ -256,15 +247,15 @@
 
         .toggle-btn {
             padding: 0.75rem 1.5rem;
-            border: none;
+            border: 1px solid transparent;
             background: transparent;
             color: var(--text-light);
-            border-radius: 30px;
+            border-radius: var(--card-radius);
             font-family: 'Lato', sans-serif;
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             flex: 1;
             text-align: center;
         }
@@ -272,7 +263,7 @@
         .toggle-btn.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(44, 95, 79, 0.25);
+            border-color: var(--primary);
         }
 
         .toggle-btn:hover:not(.active) {
@@ -287,7 +278,7 @@
             margin-bottom: 2rem;
             background: var(--warm-white);
             padding: 1rem 1.5rem;
-            border-radius: 12px;
+            border-radius: var(--card-radius);
             box-shadow: var(--shadow-soft);
         }
 
@@ -300,19 +291,13 @@
         .filter-section select {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 2px solid var(--accent-light);
-            border-radius: 8px;
+            border: 1px solid var(--accent-light);
+            border-radius: var(--card-radius);
             font-family: 'Lato', sans-serif;
             font-size: 1rem;
             color: var(--text-dark);
             background: white;
             cursor: pointer;
-            transition: border-color 0.2s;
-        }
-
-        .filter-section select:focus {
-            outline: none;
-            border-color: var(--primary);
         }
 
         /* Dashboard Grids */
@@ -339,11 +324,11 @@
         /* Modern Dashboard Card */
         .result-card {
             background: var(--warm-white);
-            padding: 2rem;
+            padding: 2.2rem;
             border-radius: var(--card-radius);
             box-shadow: var(--shadow-soft);
             border: 1px solid rgba(212, 163, 115, 0.2);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            transition: box-shadow 0.25s ease;
             position: relative;
         }
 
@@ -381,17 +366,6 @@
             justify-content: center;
             align-items: center;
             box-shadow: var(--shadow-soft);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .total-box::after {
-            content: '📋';
-            position: absolute;
-            font-size: 7rem;
-            right: -1rem;
-            bottom: -1rem;
-            opacity: 0.1;
         }
 
         .total-box h3 {
@@ -421,57 +395,54 @@
         .gender-display {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1.5rem;
             height: 100%;
         }
 
         .gender-option {
             text-align: center;
             flex: 1;
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            border-radius: var(--card-radius);
             transition: transform 0.2s ease;
             cursor: pointer;
         }
 
         .gender-option:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .gender-option.boy-box {
             background: var(--boy-blue-bg);
-            border: 2px solid rgba(74, 144, 226, 0.2);
+            border: 1px solid rgba(74, 144, 226, 0.2);
         }
 
         .gender-option.girl-box {
             background: var(--girl-pink-bg);
-            border: 2px solid rgba(232, 122, 144, 0.2);
-        }
-
-        .gender-icon {
-            font-size: 2.8rem;
-            margin-bottom: 0.25rem;
-            display: block;
+            border: 1px solid rgba(232, 122, 144, 0.2);
         }
 
         .gender-label {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--text-dark);
             margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .gender-percentage {
-            font-size: 2.4rem;
+            font-size: 2.6rem;
             font-weight: 700;
             font-family: 'Crimson Pro', serif;
             line-height: 1;
+            margin-top: 0.5rem;
         }
 
         .gender-count {
             font-size: 0.85rem;
             color: var(--text-light);
-            margin-top: 0.3rem;
+            margin-top: 0.5rem;
             font-weight: 600;
         }
 
@@ -481,13 +452,12 @@
         /* Progress Bar Showdown */
         .gender-bar-container {
             width: 100%;
-            height: 14px;
+            height: 8px; /* Sleeker bar */
             background: var(--girl-pink-bg);
-            border-radius: 10px;
+            border-radius: 2px;
             overflow: hidden;
             display: flex;
-            margin-top: 1rem;
-            border: 1px solid rgba(0,0,0,0.05);
+            margin-top: 1.5rem;
         }
 
         .gender-bar-boy {
@@ -496,105 +466,72 @@
             transition: width 0.8s ease-in-out;
         }
 
-        /* Timeline Display */
-        .date-timeline-card {
-            margin-bottom: 1.5rem;
-        }
-
-        .date-timeline {
+        /* Sleek Left-Aligned Proportional Timeline */
+        .timeline-wrapper {
             position: relative;
-            padding: 2.5rem 1rem 1rem;
-            margin: 1rem 0;
-            overflow-x: auto;
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem; /* Prevents touching next cards */
         }
 
-        .timeline-line {
+        .timeline-track {
             position: absolute;
-            top: 55%;
-            left: 2rem;
-            right: 2rem;
-            height: 6px;
-            background: linear-gradient(to right, #e2ded5, var(--primary));
-            border-radius: 3px;
-            transform: translateY(-50%);
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(212, 163, 115, 0.4);
         }
 
-        .timeline-container {
+        .timeline-entry {
             position: relative;
-            height: 170px;
-            min-width: 800px;
-        }
-
-        .timeline-marker {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform: translateX(-50%);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .timeline-marker:hover {
-            transform: translateX(-50%) scale(1.1);
-        }
-
-        .timeline-dots {
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
-            gap: 4px;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1.5rem; 
         }
 
         .timeline-dot {
-            width: 16px;
-            height: 16px;
-            background: var(--primary);
-            border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(44, 95, 79, 0.3);
-            z-index: 2;
+            position: absolute;
+            left: -1.82rem; /* Centers over the 2px track at left: 0 */
+            top: 0.35rem;
+            width: 10px;
+            height: 10px;
+            background: var(--warm-white);
+            border: 2px solid var(--primary);
+            border-radius: 50%; /* Dots remain circular */
         }
 
-        .timeline-dot.due-date {
-            width: 28px;
-            height: 28px;
+        .due-date-dot {
             background: var(--accent);
-            animation: pulse 2s infinite;
-            z-index: 3;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 2px 10px rgba(212, 163, 115, 0.5); }
-            50% { transform: scale(1.2); box-shadow: 0 4px 18px rgba(212, 163, 115, 0.8); }
-        }
-
-        .timeline-label {
-            font-size: 0.85rem;
-            color: var(--text-dark);
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .timeline-count {
-            font-size: 1.2rem;
+        .timeline-date-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--primary);
-            font-family: 'Crimson Pro', serif;
+            margin-bottom: 0.4rem;
         }
 
-        .due-date-label {
-            color: var(--accent);
-            font-size: 0.95rem;
-            font-weight: 700;
+        .timeline-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         /* Chart Canvas Container */
         .chart-container {
             position: relative;
-            max-width: 360px;
+            max-width: 100%;
+            height: 250px;
             margin: 0 auto;
-            padding: 0.5rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .doughnut-container {
+            max-width: 250px;
         }
 
         /* Tooltip */
@@ -602,16 +539,16 @@
             position: absolute;
             background: var(--primary-dark);
             color: white;
-            padding: 0.75rem 1.1rem;
-            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            border-radius: 4px; /* Sleeker */
             font-size: 0.9rem;
             z-index: 1000;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.2s ease;
             white-space: nowrap;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-            border: 1px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: 1px solid var(--primary);
         }
 
         .tooltip.show {
@@ -620,7 +557,7 @@
 
         .tooltip strong {
             display: block;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.25rem;
             color: var(--accent);
         }
 
@@ -631,23 +568,23 @@
             gap: 0.75rem;
         }
 
-        .name-badge {
+        .name-badge, .timeline-name-pill {
             background: var(--warm-white);
-            padding: 0.75rem 0.5rem;
-            border-radius: 10px;
+            padding: 0.4rem 0.6rem;
+            border-radius: var(--card-radius); /* Square/sleek */
             text-align: center;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-dark);
-            border: 2px solid var(--accent);
+            border: 1px solid var(--accent);
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            display: inline-block;
         }
 
-        .name-badge:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        .name-badge:hover, .timeline-name-pill:hover {
+            background: var(--cream);
+            border-color: var(--primary);
         }
 
         .boy-badge {
@@ -656,18 +593,16 @@
             color: #2b5993;
         }
 
-        .boy-badge:hover {
-            border-color: var(--boy-blue);
-        }
-
         .girl-badge {
             border-color: rgba(232, 122, 144, 0.4);
             background: var(--girl-pink-bg);
             color: #aa3d52;
         }
 
-        .girl-badge:hover {
-            border-color: var(--girl-pink);
+        .neutral-badge {
+            border-color: rgba(212, 163, 115, 0.4);
+            background: var(--accent-light);
+            color: var(--primary-dark);
         }
 
         /* Individual Response View */
@@ -682,7 +617,7 @@
         }
 
         .response-header {
-            border-bottom: 2px solid var(--accent-light);
+            border-bottom: 1px solid var(--accent-light);
             padding-bottom: 1.25rem;
             margin-bottom: 1.75rem;
             text-align: center;
@@ -713,10 +648,10 @@
 
         .response-answer {
             color: var(--text-dark);
-            padding: 0.85rem 1.1rem;
+            padding: 0.75rem 1rem;
             background: var(--cream);
-            border-radius: 8px;
-            border-left: 4px solid var(--accent);
+            border-radius: var(--card-radius);
+            border-left: 3px solid var(--accent);
             font-size: 1.05rem;
             font-weight: 600;
         }
@@ -740,11 +675,9 @@
             .top-summary-grid {
                 grid-template-columns: 1fr;
             }
-
             .charts-grid {
                 grid-template-columns: 1fr;
             }
-
             .names-comparison-grid {
                 grid-template-columns: 1fr;
             }
@@ -754,27 +687,15 @@
             .page-header h1 {
                 font-size: 2.2rem;
             }
-
             .countdown-display {
                 grid-template-columns: repeat(2, 1fr);
             }
-
             .countdown-number {
                 font-size: 2.2rem;
             }
-
-            .view-controls {
-                border-radius: 20px;
-                padding: 0.75rem;
-            }
-
             .gender-display {
                 flex-direction: column;
                 gap: 1rem;
-            }
-
-            .chart-container {
-                max-width: 280px;
             }
         }
     </style>
@@ -791,15 +712,22 @@
     </nav>
 
     <div class="page-header">
-        <h1>Baby Penner Due August 10, 2026!</h1>
+        <h1>Baby Penner Due August 10, 2026</h1>
         <p>Join us in celebrating this exciting journey & exploring predictions</p>
+        <a href="scoreboard.html" style="display: inline-block; margin-top: 1.5rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.4); color: #fff; padding: 0.6rem 1.2rem; border-radius: 4px; text-decoration: none; font-size: 0.95rem; font-weight: 700; transition: all 0.2s ease; letter-spacing: 1px;">
+            🕹️ VIEW ARCADE LEADERBOARD
+        </a>
     </div>
 
     <div class="container">
         <!-- Countdown Section -->
         <section class="content-section">
             <div class="countdown-section">
-                <div class="baby-emoji">👶</div>
+                <!-- Clock SVG -->
+                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
                 <h2 class="countdown-title">Countdown to Baby Penner</h2>
                 <div class="countdown-display">
                     <div class="countdown-item">
@@ -826,14 +754,14 @@
         <section class="survey-section">
             <div class="survey-header">
                 <h2>Friends & Family Predictions</h2>
-                <p>Explore what everyone guessed for Baby Penner!</p>
+                <p>Explore what everyone guessed for Baby Penner</p>
             </div>
 
             <!-- View Switcher Controls -->
             <div class="view-controls">
                 <div class="view-toggle">
-                    <button class="toggle-btn active" onclick="showAggregate()">📊 Dashboard View</button>
-                    <button class="toggle-btn" onclick="showIndividual()">👤 Individual Responses</button>
+                    <button class="toggle-btn active" onclick="showAggregate()">Dashboard View</button>
+                    <button class="toggle-btn" onclick="showIndividual()">Individual Responses</button>
                 </div>
             </div>
 
@@ -868,8 +796,14 @@
     <!-- Hover Tooltip -->
     <div class="tooltip" id="tooltip"></div>
 
+    <div style="text-align: center; margin: 4rem 0 2rem;">
+        <a href="scoreboard.html" style="background: #111; color: #0ff; font-family: 'Lato', sans-serif; font-weight: 700; text-decoration: none; padding: 1rem 2rem; border: 2px solid #0ff; border-radius: 4px; box-shadow: 0 0 15px rgba(0,255,255,0.4), inset 0 0 10px rgba(0,255,255,0.2); text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; display: inline-block;">
+            🕹️ Arcade Leaderboard 🕹️
+        </a>
+    </div>
+
     <footer>
-        <p>&copy; 2026 The Penner Family. Made with ❤️</p>
+        <p>&copy; 2026 The Penner Family. Made with Care.</p>
     </footer>
 
     <script>
@@ -902,14 +836,44 @@
         const boyNameLookup = {};
         const girlNameLookup = {};
 
+        // To generate literal colors
+        const literalColors = {
+            hair: {
+                "Black": "#2d2d2d",
+                "Brunette": "#5c4033",
+                "Blonde": "#e6c27a",
+                "Red": "#b74136"
+            },
+            eyes: {
+                "Brown (Dean's)": "#6b4423",
+                "Hazel (Megan's)": "#a08649",
+                "Green": "#4a7c59"
+            }
+        };
+
         surveyData.forEach(response => {
             genderLookup[response.gender].push(response.name);
             
+            // Standardize weight strings for easy sorting
+            let w = response.weight.toLowerCase().replace('lbs', 'lb').replace('ounces', 'oz').replace(',', '').replace(' ', '');
+            let weightKey = response.weight; // fallback
+            if (w.includes('7lb0oz')) weightKey = "7 lbs 0 oz";
+            if (w.includes('7lb7oz')) weightKey = "7 lbs 7 oz";
+            if (w.includes('7lb8oz')) weightKey = "7 lbs 8 oz";
+            if (w.includes('8lb1oz')) weightKey = "8 lbs 1 oz";
+            if (w.includes('8lb2oz')) weightKey = "8 lbs 2 oz";
+            if (w.includes('8lb3oz')) weightKey = "8 lbs 3 oz";
+            if (w.includes('8lb4oz')) weightKey = "8 lbs 4 oz";
+            if (w.includes('8lb5oz')) weightKey = "8 lbs 5 oz";
+            if (w.includes('8lb8oz')) weightKey = "8 lbs 8 oz";
+            if (w.includes('8lb12oz')) weightKey = "8 lbs 12 oz";
+            if (w.includes('10lb')) weightKey = "10 lbs";
+
             if (!dateLookup[response.date]) dateLookup[response.date] = [];
-            dateLookup[response.date].push(response.name);
+            dateLookup[response.date].push({name: response.name, gender: response.gender});
             
-            if (!weightLookup[response.weight]) weightLookup[response.weight] = [];
-            weightLookup[response.weight].push(response.name);
+            if (!weightLookup[weightKey]) weightLookup[weightKey] = [];
+            weightLookup[weightKey].push(response.name);
             
             if (!hairLookup[response.hair]) hairLookup[response.hair] = [];
             hairLookup[response.hair].push(response.name);
@@ -972,103 +936,118 @@
             document.getElementById('hours').textContent = hours;
             document.getElementById('minutes').textContent = minutes;
             document.getElementById('seconds').textContent = seconds;
-
+            
             if (distance < 0) {
                 document.getElementById('days').textContent = '0';
                 document.getElementById('hours').textContent = '0';
                 document.getElementById('minutes').textContent = '0';
                 document.getElementById('seconds').textContent = '0';
-                document.querySelector('.countdown-title').textContent = 'Baby Penner is here! 🎉';
+                document.querySelector('.countdown-title').textContent = 'Baby Penner is here!';
             }
         }
-
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
         let charts = {};
         Chart.register(ChartDataLabels);
 
-        function generateColors(count) {
-            const baseColors = [
-                '#2c5f4f', '#d4a373', '#4a90e2', '#e87a90', '#6c5ce7',
-                '#00b894', '#fdcb6e', '#e17055', '#00cec9', '#fab1a0'
-            ];
-            const colors = [];
-            for (let i = 0; i < count; i++) {
-                colors.push(baseColors[i % baseColors.length]);
-            }
-            return colors;
-        }
-
-        function createPieChart(canvasId, data, title, lookup) {
-            if (charts[canvasId]) {
-                charts[canvasId].destroy();
-            }
-
+        function createBarChart(canvasId, data, title, lookup, isHorizontal = false) {
+            if (charts[canvasId]) charts[canvasId].destroy();
             const ctx = document.getElementById(canvasId).getContext('2d');
             const labels = Object.keys(data);
             const values = Object.values(data);
-            const colors = generateColors(labels.length);
 
             charts[canvasId] = new Chart(ctx, {
-                type: 'pie',
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: '#2c5f4f',
+                        borderRadius: 2
+                    }]
+                },
+                options: {
+                    indexAxis: isHorizontal ? 'y' : 'x',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) { return context[0].label; },
+                                label: function(context) { return `${context.parsed[isHorizontal ? 'x' : 'y']} votes`; },
+                                afterLabel: function(context) {
+                                    const label = context.label;
+                                    const voters = lookup[label] || [];
+                                    return voters.length > 0 ? '\n' + voters.join('\n') : '';
+                                }
+                            },
+                            padding: 10
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            font: { weight: 'bold' },
+                            anchor: 'center',
+                            align: 'center',
+                            formatter: (value) => value > 0 ? value : ''
+                        }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { family: "'Lato', sans-serif" } } },
+                        y: { grid: { borderDash: [4, 4] }, ticks: { stepSize: 1, font: { family: "'Lato', sans-serif" } } }
+                    }
+                }
+            });
+        }
+
+        function createDoughnutChart(canvasId, data, title, lookup, literalColorMap) {
+            if (charts[canvasId]) charts[canvasId].destroy();
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+            const colors = labels.map(label => literalColorMap[label] || '#cccccc');
+
+            charts[canvasId] = new Chart(ctx, {
+                type: 'doughnut',
                 data: {
                     labels: labels,
                     datasets: [{
                         data: values,
                         backgroundColor: colors,
                         borderColor: '#ffffff',
-                        borderWidth: 2
+                        borderWidth: 2,
+                        hoverOffset: 4
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 12,
-                                font: {
-                                    size: 11,
-                                    family: "'Lato', sans-serif"
-                                },
-                                color: '#2d2d2d'
-                            }
-                        },
+                        legend: { position: 'bottom', labels: { padding: 15, font: { family: "'Lato', sans-serif" } } },
                         tooltip: {
                             callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
+                                title: function(context) { return context[0].label; },
                                 label: function(context) {
                                     const value = context.parsed || 0;
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((value / total) * 100).toFixed(0);
-                                    return `${percentage}% (${value} ${value === 1 ? 'vote' : 'votes'})`;
+                                    const pct = ((value / total) * 100).toFixed(0);
+                                    return `${pct}% (${value} votes)`;
                                 },
                                 afterLabel: function(context) {
-                                    const label = context.label || '';
-                                    const voters = lookup[label] || [];
-                                    if (voters.length > 0) {
-                                        return '\n' + voters.join('\n');
-                                    }
-                                    return '';
+                                    const voters = lookup[context.label] || [];
+                                    return voters.length > 0 ? '\n' + voters.join('\n') : '';
                                 }
                             },
-                            displayColors: false,
                             padding: 10
                         },
                         datalabels: {
                             color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 13
-                            },
-                            formatter: (value, context) => {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((value / total) * 100).toFixed(0);
-                                return percentage + '%';
+                            font: { weight: 'bold', size: 12 },
+                            formatter: (value, ctx) => {
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return ((value / total) * 100).toFixed(0) + '%';
                             }
                         }
                     }
@@ -1087,40 +1066,134 @@
             const boyPercent = ((boyCount / surveyData.length) * 100).toFixed(0);
             const girlPercent = ((girlCount / surveyData.length) * 100).toFixed(0);
 
-            // Data aggregations
-            const weights = { "7 lbs 0 oz": 1, "7 lb 7 oz": 1, "7 lbs 8 oz": 2, "8 lbs 1 oz": 1, "8 lbs 2 oz": 3, "8 lbs 3 oz": 1, "8 lb 4 oz": 1, "8 lbs 5 oz": 1, "8 lbs 8 oz": 2, "8 lbs 12 oz": 1, "10 lbs": 1 };
-            const hair = { "Black": 5, "Brunette": 8, "Blonde": 1, "Red": 1 };
-            const eye = { "Brown (Dean's)": 9, "Hazel (Megan's)": 5, "Green": 1 };
-            const hairSituation = { "Peach Fuzz": 8, "Bald as an Eagle": 1, "80s Rockstar - Full head of straight": 3, "Shirley Temple - Full head of curls": 3 };
+            // Ordered Weight Data
+            const orderedWeights = ["7 lbs 0 oz", "7 lbs 7 oz", "7 lbs 8 oz", "8 lbs 1 oz", "8 lbs 2 oz", "8 lbs 3 oz", "8 lbs 4 oz", "8 lbs 5 oz", "8 lbs 8 oz", "8 lbs 12 oz", "10 lbs"];
+            const weights = {};
+            orderedWeights.forEach(w => {
+                if(weightLookup[w]) weights[w] = weightLookup[w].length;
+            });
 
-            const boyNames = ["Luke", "Hudson", "Trey", "Benjamin (Ben)", "xkcd.com/327", "Aidan Patrick", "Riley", "Reed", "Austin", "Levi", "Tyler", "Liam", "Mason", "Nate", "Theo", "Tobias (Toby)", "Dane", "Vector Daniel", "Dean jr.", "Nathan"];
-            const girlNames = ["Lydia", "Mia", "Khloe", "Molly", "Queen Elizabeth III", "Brigid Aoife", "Riley", "Margot", "Maeve", "Sophia (Sophie)", "Elaine (Ellie)", "Maya", "Isabella", "Maygan", "Erin", "Danielle Lynne", "Megan jr.", "Cara"];
+            // Hair and Eye Data
+            const hair = {};
+            Object.keys(literalColors.hair).forEach(h => {
+                if(hairLookup[h]) hair[h] = hairLookup[h].length;
+            });
+            const eye = {};
+            Object.keys(literalColors.eyes).forEach(e => {
+                if(eyeLookup[e]) eye[e] = eyeLookup[e].length;
+            });
+            
+            // Hair Situation
+            const hairSituation = {
+                "Peach Fuzz": hairSituationLookup["Peach Fuzz"]?.length || 0,
+                "80s Rockstar - Full head of straight": hairSituationLookup["80s Rockstar - Full head of straight"]?.length || 0,
+                "Shirley Temple - Full head of curls": hairSituationLookup["Shirley Temple - Full head of curls"]?.length || 0,
+                "Bald as an Eagle": hairSituationLookup["Bald as an Eagle"]?.length || 0
+            };
+
+            const boyNames = Object.keys(boyNameLookup).sort();
+            const girlNames = Object.keys(girlNameLookup).sort();
+
+            // Build Sleek Left-Aligned Proportional Timeline HTML
+            const allEntries = [];
+            Object.keys(dateLookup).forEach(dateStr => {
+                allEntries.push({ date: new Date(dateStr), type: 'guess', dateStr: dateStr });
+            });
+            // Add Due Date
+            allEntries.push({ date: new Date('8/10/2026'), type: 'due', dateStr: '8/10/2026' });
+            
+            // Sort chronologically
+            allEntries.sort((a, b) => a.date - b.date);
+
+            let timelineHtml = `
+                <div class="result-card">
+                    <h3>Birthday Predictions</h3>
+                    <div class="timeline-wrapper">
+                        <div class="timeline-track"></div>
+            `;
+            
+            let prevDate = null;
+            allEntries.forEach((entry) => {
+                // Calculate proportional vertical gap (15px per day difference)
+                let extraMargin = 0;
+                if (prevDate) {
+                    const diffTime = Math.abs(entry.date - prevDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    extraMargin = diffDays * 12; // 12px margin per day for sleek proportional spacing
+                }
+                prevDate = entry.date;
+
+                const displayDate = entry.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+                
+                let contentHtml = '';
+                let dotClass = 'timeline-dot';
+                let dateColor = '';
+
+                if (entry.type === 'due') {
+                    dotClass += ' due-date-dot';
+                    dateColor = 'style="color: var(--accent);"';
+                    contentHtml = `<span class="timeline-name-pill neutral-badge" style="font-weight:700;">Official Due Date</span>`;
+                } else {
+                    const predictors = dateLookup[entry.dateStr];
+                    contentHtml = predictors.map(p => {
+                        const badgeClass = p.gender === 'Boy!' ? 'boy-badge' : 'girl-badge';
+                        return `<span class="timeline-name-pill ${badgeClass}">${p.name}</span>`;
+                    }).join('');
+                }
+
+                // Add the entry with calculated top margin
+                timelineHtml += `
+                    <div class="timeline-entry" style="margin-top: ${extraMargin}px;">
+                        <div class="${dotClass}"></div>
+                        <div class="timeline-date-text" ${dateColor}>${displayDate}</div>
+                        <div class="timeline-content">
+                            ${contentHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            timelineHtml += `
+                    </div>
+                </div>
+            `;
 
             let html = `
                 <!-- Top Summary Grid -->
                 <div class="top-summary-grid">
                     <div class="total-box">
+                        <svg class="svg-icon svg-icon-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
                         <h3>Total Votes</h3>
                         <div class="total-number">15</div>
                         <div class="total-subtitle">Friends & Family Participated</div>
                     </div>
 
                     <div class="result-card">
-                        <h3>👦 vs 👧 Boy or Girl Showdown</h3>
+                        <h3>Boy vs Girl Showdown</h3>
                         <div class="gender-display">
                             <div class="gender-option boy-box" 
                                  onmouseenter="showTooltip(event, ${JSON.stringify(genderLookup['Boy!']).replace(/"/g, '&quot;')}, 'Voted Boy: ')"
                                  onmouseleave="hideTooltip()">
-                                <span class="gender-icon">👦</span>
-                                <div class="gender-label">Boy!</div>
+                                <svg class="svg-icon svg-icon-boy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <div class="gender-label">Boy</div>
                                 <div class="gender-percentage boy-color">${boyPercent}%</div>
                                 <div class="gender-count">${boyCount} votes</div>
                             </div>
                             <div class="gender-option girl-box"
                                  onmouseenter="showTooltip(event, ${JSON.stringify(genderLookup['Girl!']).replace(/"/g, '&quot;')}, 'Voted Girl: ')"
                                  onmouseleave="hideTooltip()">
-                                <span class="gender-icon">👧</span>
-                                <div class="gender-label">Girl!</div>
+                                <svg class="svg-icon svg-icon-girl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <div class="gender-label">Girl</div>
                                 <div class="gender-percentage girl-color">${girlPercent}%</div>
                                 <div class="gender-count">${girlCount} votes</div>
                             </div>
@@ -1131,81 +1204,36 @@
                     </div>
                 </div>
 
-                <!-- Timeline Section -->
-                <div class="result-card date-timeline-card">
-                    <h3>📅 Birthday Predictions (Due Date: Aug 10, 2026)</h3>
-                    <div class="date-timeline">
-                        <div class="timeline-line"></div>
-                        <div class="timeline-container">
-                            <div class="timeline-marker" style="left: 50%;">
-                                <div class="timeline-dots">
-                                    <div class="timeline-dot due-date"></div>
-                                </div>
-                                <div class="timeline-label due-date-label">Due Date</div>
-                                <div class="timeline-label due-date-label">8/10/26</div>
-                            </div>`;
-
-            const timelineData = [
-                {date: "7/31/2026", display: "7/31", pos: 0, count: 1},
-                {date: "8/1/2026", display: "8/1", pos: 8, count: 3},
-                {date: "8/5/2026", display: "8/5", pos: 27, count: 2},
-                {date: "8/6/2026", display: "8/6", pos: 35, count: 1},
-                {date: "8/8/2026", display: "8/8", pos: 43, count: 1},
-                {date: "8/12/2026", display: "8/12", pos: 59, count: 1},
-                {date: "8/13/2026", display: "8/13", pos: 67, count: 1},
-                {date: "8/14/2026", display: "8/14", pos: 75, count: 2},
-                {date: "8/15/2026", display: "8/15", pos: 83, count: 2},
-                {date: "8/19/2026", display: "8/19", pos: 100, count: 1}
-            ];
-
-            timelineData.forEach(item => {
-                const dots = Array(item.count).fill('<div class="timeline-dot"></div>').join('');
-                const names = dateLookup[item.date] || [];
-                html += `
-                    <div class="timeline-marker" style="left: ${item.pos}%; top: 70px;"
-                         onmouseenter="showTooltip(event, ${JSON.stringify(names).replace(/"/g, '&quot;')}, '${item.display}: ')"
-                         onmouseleave="hideTooltip()">
-                        <div class="timeline-dots">
-                            ${dots}
-                        </div>
-                        <div class="timeline-count">${item.count}</div>
-                        <div class="timeline-label">${item.display}</div>
-                    </div>
-                `;
-            });
-
-            html += `
-                        </div>
-                    </div>
-                </div>
+                <!-- Vertical Traditional Timeline Section -->
+                ${timelineHtml}
 
                 <!-- 2x2 Charts Grid -->
                 <div class="charts-grid">
                     <div class="result-card">
-                        <h3>⚖️ Expected Weight</h3>
-                        <div class="section-subtitle">(Dean was 7 lbs 2.5 oz, Megan was 9 lbs 0 oz)</div>
+                        <h3>Expected Weight</h3>
+                        <div class="section-subtitle">(Dean: 7 lbs 2.5 oz | Megan: 9 lbs 0 oz)</div>
                         <div class="chart-container">
                             <canvas id="weightChart"></canvas>
                         </div>
                     </div>
 
                     <div class="result-card">
-                        <h3>💇 Hair Color</h3>
-                        <div class="chart-container">
-                            <canvas id="hairChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="result-card">
-                        <h3>👶 Hair Situation at Birth</h3>
+                        <h3>Hair Situation at Birth</h3>
                         <div class="chart-container">
                             <canvas id="hairSituationChart"></canvas>
                         </div>
                     </div>
 
                     <div class="result-card">
-                        <h3>👁️ Eye Color</h3>
-                        <div class="chart-container">
+                        <h3>Hair Color</h3>
+                        <div class="chart-container doughnut-container">
+                            <canvas id="hairChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <h3>Eye Color</h3>
+                        <div class="chart-container doughnut-container">
                             <canvas id="eyeChart"></canvas>
                         </div>
                     </div>
@@ -1214,7 +1242,7 @@
                 <!-- Name Suggestions Grid -->
                 <div class="names-comparison-grid">
                     <div class="result-card">
-                        <h3>✨ Boy Name Suggestions</h3>
+                        <h3>Boy Name Suggestions</h3>
                         <div class="names-grid">
                             ${boyNames.map(name => {
                                 const voters = boyNameLookup[name] || [];
@@ -1226,7 +1254,7 @@
                     </div>
 
                     <div class="result-card">
-                        <h3>✨ Girl Name Suggestions</h3>
+                        <h3>Girl Name Suggestions</h3>
                         <div class="names-grid">
                             ${girlNames.map(name => {
                                 const voters = girlNameLookup[name] || [];
@@ -1242,10 +1270,10 @@
             document.getElementById('resultsContainer').innerHTML = html;
 
             setTimeout(() => {
-                createPieChart('weightChart', weights, 'Weight', weightLookup);
-                createPieChart('hairChart', hair, 'Hair Color', hairLookup);
-                createPieChart('hairSituationChart', hairSituation, 'Hair Situation', hairSituationLookup);
-                createPieChart('eyeChart', eye, 'Eye Color', eyeLookup);
+                createBarChart('weightChart', weights, 'Weight', weightLookup, false);
+                createBarChart('hairSituationChart', hairSituation, 'Hair Situation', hairSituationLookup, true);
+                createDoughnutChart('hairChart', hair, 'Hair Color', hairLookup, literalColors.hair);
+                createDoughnutChart('eyeChart', eye, 'Eye Color', eyeLookup, literalColors.eyes);
             }, 100);
         }
 
@@ -1255,71 +1283,41 @@
             document.getElementById('filterSection').style.display = 'flex';
 
             Object.keys(charts).forEach(chartId => {
-                if (charts[chartId]) {
-                    charts[chartId].destroy();
-                }
+                if (charts[chartId]) charts[chartId].destroy();
             });
             charts = {};
 
             document.getElementById('respondentFilter').value = '';
-            document.getElementById('resultsContainer').innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Select a family member or friend above to see their exact predictions! 👤</h3></div>';
+            document.getElementById('resultsContainer').innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Select a family member or friend above to see their exact predictions</h3></div>';
         }
 
         function filterResponses() {
             const index = parseInt(document.getElementById('respondentFilter').value);
-            
             if (isNaN(index)) {
-                document.getElementById('resultsContainer').innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--text-light);"><h3>Select a family member or friend above to see their exact predictions! 👤</h3></div>';
+                showIndividual();
                 return;
             }
 
             const response = surveyData[index];
-
             let html = `
                 <div class="response-card">
                     <div class="response-header">
                         <h3>${response.name}</h3>
                         <p>Submitted: ${response.timestamp}</p>
                     </div>
-                    <div class="response-item">
-                        <div class="response-question">Boy or Girl?</div>
-                        <div class="response-answer">${response.gender}</div>
-                    </div>
-                    <div class="response-item">
-                        <div class="response-question">Birthday Prediction (Due Date: Aug 10, 2026)</div>
-                        <div class="response-answer">${response.date}</div>
-                    </div>
-                    <div class="response-item">
-                        <div class="response-question">Weight (Dean: 7 lbs 2.5 oz | Megan: 9 lbs 0 oz)</div>
-                        <div class="response-answer">${response.weight}</div>
-                    </div>
-                    <div class="response-item">
-                        <div class="response-question">Hair Color</div>
-                        <div class="response-answer">${response.hair}</div>
-                    </div>
-                    <div class="response-item">
-                        <div class="response-question">Hair Situation at Birth</div>
-                        <div class="response-answer">${response.hairSituation}</div>
-                    </div>
-                    <div class="response-item">
-                        <div class="response-question">Eye Color</div>
-                        <div class="response-answer">${response.eye}</div>
-                    </div>
-                    <div class="response-item">
-                        <div class="response-question">Boy Name Suggestion</div>
-                        <div class="response-answer">${response.boyName || 'No suggestion'}</div>
-                    </div>
-                    <div class="response-item">
-                        <div class="response-question">Girl Name Suggestion</div>
-                        <div class="response-answer">${response.girlName || 'No suggestion'}</div>
-                    </div>
+                    <div class="response-item"><div class="response-question">Boy or Girl?</div><div class="response-answer">${response.gender}</div></div>
+                    <div class="response-item"><div class="response-question">Birthday Prediction (Due: Aug 10)</div><div class="response-answer">${response.date}</div></div>
+                    <div class="response-item"><div class="response-question">Weight</div><div class="response-answer">${response.weight}</div></div>
+                    <div class="response-item"><div class="response-question">Hair Color</div><div class="response-answer">${response.hair}</div></div>
+                    <div class="response-item"><div class="response-question">Hair Situation at Birth</div><div class="response-answer">${response.hairSituation}</div></div>
+                    <div class="response-item"><div class="response-question">Eye Color</div><div class="response-answer">${response.eye}</div></div>
+                    <div class="response-item"><div class="response-question">Boy Name Suggestion</div><div class="response-answer">${response.boyName || 'No suggestion'}</div></div>
+                    <div class="response-item"><div class="response-question">Girl Name Suggestion</div><div class="response-answer">${response.girlName || 'No suggestion'}</div></div>
                 </div>
             `;
-
             document.getElementById('resultsContainer').innerHTML = html;
         }
 
-        // Show dashboard on page load
         showAggregate();
     </script>
 </body>
