@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Baby Penner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c5f4f;
+            --accent: #d4a373;
+            --cream: #faf8f3;
+            --warm-white: #ffffff;
+            --text-dark: #2d2d2d;
+            --card-radius: 8px;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .admin-card {
+            background: var(--warm-white);
+            padding: 2.5rem;
+            border-radius: var(--card-radius);
+            box-shadow: 0 4px 20px rgba(44, 95, 79, 0.08);
+            max-width: 650px;
+            width: 100%;
+            border: 1px solid rgba(212, 163, 115, 0.2);
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0eae1;
+        }
+
+        .form-group:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* Radio Checkbox Styling */
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            background: #faf8f3;
+            border: 2px solid #e1d8cd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .radio-option:hover {
+            border-color: var(--accent);
+            background: #fff;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 0.8rem;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        /* Highlight selected option */
+        .radio-option:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(44, 95, 79, 0.05);
+            font-weight: 700;
+        }
+
+        /* Basic Inputs */
+        input[type="text"], input[type="number"], input[type="date"], select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1d8cd;
+            border-radius: 6px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            background: #fff;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .weight-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .weight-group > div {
+            flex: 1;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: #1a3a2e;
+        }
+
+        #resultBox {
+            margin-top: 2rem;
+            display: none;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 2px dashed var(--primary);
+        }
+
+        #jsonOutput {
+            width: 100%;
+            height: 250px;
+            padding: 1rem;
+            background: #2d2d2d;
+            color: #39ff14;
+            font-family: monospace;
+            border-radius: 4px;
+            border: none;
+            resize: none;
+            margin-top: 1rem;
+        }
+
+        .success-msg {
+            color: var(--primary);
+            font-weight: bold;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <h1>Baby Generator 👶</h1>
+        <p class="subtitle">Just check off the right answers when the baby arrives. It guarantees zero typos for the scoreboard!</p>
+
+        <div class="form-group">
+            <span class="section-label">1. Is the baby born?</span>
+            <select id="babyIsBorn" style="max-width: 200px;">
+                <option value="false">Not Yet</option>
+                <option value="true">YES!</option>
+            </select>
+        </div>
+
+        <div id="statsForm" style="opacity: 0.4; pointer-events: none; transition: opacity 0.3s;">
+            
+            <div class="form-group">
+                <span class="section-label">2. Gender</span>
+                <div class="radio-grid">
+                    <label class="radio-option"><input type="radio" name="gender" value="Boy!"> Boy!</label>
+                    <label class="radio-option"><input type="radio" name="gender" value="Girl!"> Girl!</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="section-label">3. Hair Color</span>
+                <div class="radio-grid">
+                    <label class="radio-option"><input type="radio" name="hairColor" value="Black"> Black</label>
+                    <label class="radio-option"><input type="radio" name="hairColor" value="Brunette"> Brunette</label>
+                    <label class="radio-option"><input type="radio" name="hairColor" value="Blonde"> Blonde</label>
+                    <label class="radio-option"><input type="radio" name="hairColor" value="Red"> Red</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="section-label">4. Hair Situation at Birth</span>
+                <div class="radio-grid" style="grid-template-columns: 1fr;">
+                    <label class="radio-option"><input type="radio" name="hairSituation" value="Bald as an Eagle"> Bald as an Eagle</label>
+                    <label class="radio-option"><input type="radio" name="hairSituation" value="Peach Fuzz"> Peach Fuzz</label>
+                    <label class="radio-option"><input type="radio" name="hairSituation" value="80s Rockstar - Full head of straight"> 80s Rockstar - Full head of straight</label>
+                    <label class="radio-option"><input type="radio" name="hairSituation" value="Shirley Temple - Full head of curls"> Shirley Temple - Full head of curls</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="section-label">5. Eye Color</span>
+                <div class="radio-grid">
+                    <label class="radio-option"><input type="radio" name="eyeColor" value="Brown (Dean's)"> Brown (Dean's)</label>
+                    <label class="radio-option"><input type="radio" name="eyeColor" value="Hazel (Megan's)"> Hazel (Megan's)</label>
+                    <label class="radio-option"><input type="radio" name="eyeColor" value="Green"> Green</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="section-label">6. Birth Date & Weight</span>
+                <div style="display: grid; gap: 1rem;">
+                    <div>
+                        <label style="font-size: 0.85rem; color: #666;">Date Born:</label>
+                        <input type="date" id="birthDate">
+                    </div>
+                    <div class="weight-group">
+                        <div>
+                            <label style="font-size: 0.85rem; color: #666;">Pounds:</label>
+                            <input type="number" id="weightLbs" placeholder="lbs" min="0">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; color: #666;">Ounces:</label>
+                            <input type="number" id="weightOz" placeholder="oz" min="0" max="15">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="section-label">7. Chosen Name</span>
+                <input type="text" id="chosenName" placeholder="What is the baby's name?">
+                <small style="color: #666; display: block; margin-top: 0.4rem;">(Used to check if anyone won the 10,000 pt Jackpot)</small>
+            </div>
+        </div>
+
+        <button class="btn" onclick="generateJSON()">Generate Official Code</button>
+
+        <div id="resultBox">
+            <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-family: 'Crimson Pro', serif;">Success!</h3>
+            <p style="font-size: 0.9rem;">Copy the code below, open <strong>official_answers.json</strong> on GitHub, paste it in, and save!</p>
+            <textarea id="jsonOutput" readonly></textarea>
+            <div class="success-msg" id="successMsg">📋 Code copied to clipboard!</div>
+        </div>
+    </div>
+
+    <script>
+        // Enable form when baby is born
+        document.getElementById('babyIsBorn').addEventListener('change', function(e) {
+            const statsForm = document.getElementById('statsForm');
+            if (e.target.value === 'true') {
+                statsForm.style.opacity = '1';
+                statsForm.style.pointerEvents = 'auto';
+            } else {
+                statsForm.style.opacity = '0.4';
+                statsForm.style.pointerEvents = 'none';
+            }
+        });
+
+        function getRadioValue(name) {
+            const el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? el.value : "";
+        }
+
+        function generateJSON() {
+            // Fix timezone issue by manually parsing the date parts
+            let formattedDate = "";
+            const rawDate = document.getElementById('birthDate').value;
+            if (rawDate) {
+                const parts = rawDate.split('-');
+                // Store as m/d/yyyy format to match survey data (e.g. 8/6/2026)
+                formattedDate = parseInt(parts[1]) + '/' + parseInt(parts[2]) + '/' + parts[0];
+            }
+
+            const data = {
+                babyIsBorn: document.getElementById('babyIsBorn').value === 'true',
+                gender: getRadioValue('gender'),
+                birthDate: formattedDate,
+                weightLbs: parseInt(document.getElementById('weightLbs').value) || 0,
+                weightOz: parseInt(document.getElementById('weightOz').value) || 0,
+                hairColor: getRadioValue('hairColor'),
+                hairSituation: getRadioValue('hairSituation'),
+                eyeColor: getRadioValue('eyeColor'),
+                chosenName: document.getElementById('chosenName').value.trim()
+            };
+
+            const jsonStr = JSON.stringify(data, null, 2);
+            
+            document.getElementById('resultBox').style.display = 'block';
+            const output = document.getElementById('jsonOutput');
+            output.value = jsonStr;
+            
+            // Auto copy to clipboard
+            output.select();
+            document.execCommand('copy');
+            
+            const msg = document.getElementById('successMsg');
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 4000);
+        }
+    </script>
+</body>
+</html>
