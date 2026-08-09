@@ -1,11 +1,11 @@
 {
-  "babyIsBorn": false,
+  "babyIsBorn": true,
   "gender": "Boy!",
-  "birthDate": "",
-  "weightLbs": 0,
-  "weightOz": 0,
-  "hairColor": "",
-  "hairSituation": "",
+  "birthDate": "8/9/2026",
+  "weightLbs": 8,
+  "weightOz": 5,
+  "hairColor": "Black",
+  "hairSituation": "80s Rockstar - Full head of straight",
   "eyeColor": "",
-  "chosenName": ""
+  "chosenName": "Miles Hogan"
 }
